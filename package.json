@@ -1,0 +1,19 @@
+{
+  "name": "itechart-js-studentslab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olegkrasilev/iTechArt-JS-StudentsLab.git"
+  },
+  "author": "Oleg Krasilev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/olegkrasilev/iTechArt-JS-StudentsLab/issues"
+  },
+  "homepage": "https://github.com/olegkrasilev/iTechArt-JS-StudentsLab#readme"
+}
