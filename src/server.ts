@@ -1,7 +1,7 @@
 import { app } from '@src/app';
 import dotenv from 'dotenv';
 import { createConnection } from 'typeorm';
-import { port } from './constants/index';
+import { port } from '@src/constants/index';
 
 dotenv.config();
 
