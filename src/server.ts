@@ -1,9 +1,6 @@
 import { app } from '@src/app';
-import dotenv from 'dotenv';
 import { connectDB } from '@src/database/database';
 import { port } from '@src/constants';
-
-dotenv.config();
 
 process.on('uncaughtException', error => {
   console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
