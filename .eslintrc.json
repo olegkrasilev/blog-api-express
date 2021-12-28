@@ -11,13 +11,14 @@
     "plugin:promise/recommended",
     "prettier",
     "plugin:sonarjs/recommended",
-    "plugin:jest/recommended"
+    "plugin:jest/recommended",
+    "plugin:unicorn/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.eslint.json"
   },
-  "plugins": ["@typescript-eslint", "promise", "import", "prettier", "sonarjs", "jest"],
+  "plugins": ["@typescript-eslint", "promise", "import", "prettier", "sonarjs", "jest", "unicorn"],
   "rules": {
     "prettier/prettier": "error",
     "import/prefer-default-export": "off",
@@ -40,7 +41,15 @@
         "typedefs": true
       }
     ],
-    "import/no-extraneous-dependencies": "off"
+    "import/no-extraneous-dependencies": "off",
+    "unicorn/no-process-exit": "off",
+    "padding-line-between-statements": [
+      "error",
+      { "blankLine": "never", "prev": "import", "next": "import" },
+      { "blankLine": "always", "prev": "*", "next": ["return", "function", "if", "export", "switch"] },
+      { "blankLine": "always", "prev": ["if", "switch"], "next": "*" },
+      { "blankLine": "always", "prev": ["const", "let"], "next": "expression" }
+    ]
   },
   "settings": {
     "import/resolver": {
