@@ -49,7 +49,8 @@
       { "blankLine": "always", "prev": "*", "next": ["return", "function", "if", "export", "switch"] },
       { "blankLine": "always", "prev": ["if", "switch"], "next": "*" },
       { "blankLine": "always", "prev": ["const", "let"], "next": "expression" }
-    ]
+    ],
+    "unicorn/filename-case": "off"
   },
   "settings": {
     "import/resolver": {

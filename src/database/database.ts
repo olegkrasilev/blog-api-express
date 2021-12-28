@@ -1,3 +1,4 @@
+import { User } from '@src/models/entities/User';
 import { createConnection } from 'typeorm';
 import dotenv from 'dotenv';
 
@@ -11,6 +12,8 @@ export const connectDB = async () =>
     username: process.env.USER,
     password: process.env.PASSWORD,
     database: process.env.DATABASE,
+    entities: [User],
+    synchronize: true,
   })
     .then(result => {
       console.log('DB is connected');
