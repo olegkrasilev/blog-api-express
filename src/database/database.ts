@@ -1,5 +1,4 @@
 import { createConnection } from 'typeorm';
-import { port } from '@src/constants/index';
 
 export const connectDB = async () =>
   createConnection({
