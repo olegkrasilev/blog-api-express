@@ -30,7 +30,8 @@ const connectDB = async () =>
       return result;
     })
     .catch(error => {
-      console.log(error);
+      console.error(error);
+      throw new Error('Unable to connect to DB');
     });
 
 connectDB();
