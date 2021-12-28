@@ -1,8 +1,9 @@
 import { app } from '@src/app';
 import dotenv from 'dotenv';
+import { createConnection } from 'typeorm';
 import { port } from './constants/index';
 
-dotenv.config({ path: '../env' });
+dotenv.config();
 
 process.on('uncaughtException', error => {
   console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
@@ -13,6 +14,26 @@ process.on('uncaughtException', error => {
 const server = app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });
+
+const connectDB = async () =>
+  createConnection({
+    type: 'postgres',
+    host: 'localhost',
+    port: 5000,
+    username: process.env.USER,
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE,
+  })
+    .then(result => {
+      console.log('DB is connected');
+
+      return result;
+    })
+    .catch(error => {
+      console.log(error);
+    });
+
+connectDB();
 
 const handleException = (error: Error): void => {
   console.log('UNHANDLED REJECTION! 💥 Shutting down...');
