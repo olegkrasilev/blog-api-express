@@ -1,7 +1,8 @@
 import { User } from '@src/models/entities/User';
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
-import { RequestUser } from '../types/index';
+import { RequestUser } from '@src/types/index';
+import bcrypt from 'bcrypt';
 
 export const getAllUsers = (request: Request, response: Response) => {
   response.status(200).json({
@@ -45,7 +46,7 @@ Validate request for errors
   Check if this user exits
 */
 
-  const { email, password, confirmPassword } = request.body;
+  const { email, password } = request.body;
   const isUserExists = await User.findOne({ email });
 
   if (isUserExists) {
@@ -55,18 +56,22 @@ Validate request for errors
     });
   }
 
-  // TODO Encrypt Password
+  /*
+  Encrypts password and create user
+*/
 
-  const user = User.create({
-    email,
-    password,
-    confirmPassword,
-  });
+  if (password) {
+    const encryptedPassword = await bcrypt.hash(password, 12);
+    const user = User.create({
+      email,
+      encryptedPassword,
+    });
 
-  await user.save();
+    await user.save();
 
-  return response.status(201).json({
-    status: 'Success',
-    data: 'User was created',
-  });
+    return response.status(201).json({
+      status: 'Success',
+      data: 'User was created',
+    });
+  }
 };

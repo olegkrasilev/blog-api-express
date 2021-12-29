@@ -50,7 +50,8 @@
       { "blankLine": "always", "prev": ["if", "switch"], "next": "*" },
       { "blankLine": "always", "prev": ["const", "let"], "next": "expression" }
     ],
-    "unicorn/filename-case": "off"
+    "unicorn/filename-case": "off",
+    "consistent-return": "warn"
   },
   "settings": {
     "import/resolver": {
