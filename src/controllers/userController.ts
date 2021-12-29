@@ -4,11 +4,14 @@ import { validationResult } from 'express-validator';
 import { RequestUser } from '@src/types/index';
 import bcrypt from 'bcrypt';
 
-export const getAllUsers = (request: Request, response: Response) => {
+export const getAllUsers = async (request: Request, response: Response) => {
+  const allUsers = await User.find();
+  const allUsersEmail = allUsers.map(user => user.email);
+
   response.status(200).json({
     status: 'Success',
-    // TODO all users length
-    data: 'All users',
+    length: allUsersEmail.length,
+    data: allUsersEmail,
   });
 };
 
