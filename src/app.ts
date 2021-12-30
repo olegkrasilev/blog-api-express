@@ -11,3 +11,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use('/api/v1/users', userRouter);
+
+app.all('*', (request, response) => {
+  response.status(404).json({
+    status: 'fail',
+    data: `Can't find ${request.url} on this website`,
+  });
+});

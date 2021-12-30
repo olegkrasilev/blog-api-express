@@ -1,11 +1,11 @@
+import jwt from 'jsonwebtoken';
 import { validationResult } from 'express-validator';
 import { RequestUser } from '@src/types/index';
 import bcrypt from 'bcrypt';
 import { Response } from 'express';
 import { User } from '@src/models/entities/User';
-import jwt from 'jsonwebtoken';
 
-export const createUser = async (request: RequestUser, response: Response) => {
+export const signup = async (request: RequestUser, response: Response) => {
   const { email, password } = request.body;
 
   // Validate user input
@@ -43,23 +43,23 @@ export const createUser = async (request: RequestUser, response: Response) => {
 
   if (password) {
     const encryptedPassword = await bcrypt.hash(password, 12);
-    const user = User.create({
+    const newUser = User.create({
       email,
       encryptedPassword,
     });
 
-    await user.save();
+    await newUser.save();
 
-    // Create token
-    if (process.env.TOKEN_KEY) {
-      const token = jwt.sign({ user_id: user.id, email }, process.env.TOKEN_KEY, { expiresIn: '1w' });
+    newUser.encryptedPassword = '';
 
-      user.token = token;
+    if (process.env.JWT_SECRET) {
+      const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPERES_IN });
+
+      return response.status(201).json({
+        status: 'Success',
+        token,
+        data: newUser,
+      });
     }
-
-    return response.status(201).json({
-      status: 'Success',
-      data: user.token,
-    });
   }
 };

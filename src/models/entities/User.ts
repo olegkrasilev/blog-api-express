@@ -12,7 +12,4 @@ export class User extends BaseEntity {
 
   @Column()
   encryptedPassword: string;
-
-  @Column({ nullable: true })
-  token: string;
 }
