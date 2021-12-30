@@ -12,14 +12,6 @@ export const getAllUsers = async (request: Request, response: Response) => {
   });
 };
 
-export const getUser = (request: Request, response: Response) => {
-  response.status(200).json({
-    status: 'Success',
-    // TODO all users length
-    data: 'User',
-  });
-};
-
 export const updateUser = (request: Request, response: Response) => {
   response.status(200).json({
     status: 'Success',

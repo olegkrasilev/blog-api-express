@@ -8,6 +8,7 @@ export const createUser = async (request: RequestUser, response: Response) => {
   const { email, password } = request.body;
 
   // Validate user input
+
   if (!(email && password)) {
     response.status(400).json({
       status: 'fail',
