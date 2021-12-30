@@ -3,6 +3,7 @@ import { RequestUser } from '@src/types/index';
 import bcrypt from 'bcrypt';
 import { Response } from 'express';
 import { User } from '@src/models/entities/User';
+import jwt from 'jsonwebtoken';
 
 export const createUser = async (request: RequestUser, response: Response) => {
   const { email, password } = request.body;
@@ -38,7 +39,7 @@ export const createUser = async (request: RequestUser, response: Response) => {
     });
   }
 
-  //  Encrypts password and create user
+  //  Encrypt password and create user
 
   if (password) {
     const encryptedPassword = await bcrypt.hash(password, 12);
@@ -49,9 +50,16 @@ export const createUser = async (request: RequestUser, response: Response) => {
 
     await user.save();
 
+    // Create token
+    if (process.env.TOKEN_KEY) {
+      const token = jwt.sign({ user_id: user.id, email }, process.env.TOKEN_KEY, { expiresIn: '1w' });
+
+      user.token = token;
+    }
+
     return response.status(201).json({
       status: 'Success',
-      data: 'User was created',
+      data: user.token,
     });
   }
 };
