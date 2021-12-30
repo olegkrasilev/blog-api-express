@@ -1,5 +1,6 @@
-import { getAllUsers, updateUser } from '@src/controllers/userController';
+import { updateUser } from '@src/controllers/userController';
 import { createUser } from '@src/controllers/userController/createUser';
+import { getAllUsers } from '@src/controllers/userController/getAllUsers';
 import { getUser } from '@src/controllers/userController/getUser';
 import express from 'express';
 import { check } from 'express-validator';

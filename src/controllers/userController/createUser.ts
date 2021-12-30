@@ -10,7 +10,7 @@ export const createUser = async (request: RequestUser, response: Response) => {
   // Validate user input
 
   if (!(email && password)) {
-    response.status(400).json({
+    return response.status(400).json({
       status: 'fail',
       data: 'All input is required',
     });
