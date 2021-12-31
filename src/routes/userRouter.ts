@@ -5,21 +5,20 @@ import { getUser } from '@src/controllers/userController/getUser';
 import express from 'express';
 import { check } from 'express-validator';
 import { login } from '@src/controllers/userController/login';
+import { isAuth } from '../middleware/isAuth';
 
 export const router = express.Router();
 
-router.route('/getAllUsers').get(getAllUsers);
+const validationChain = [
+  check('email', 'Please provide correct email').not().isEmpty().trim().toLowerCase().isEmail().normalizeEmail(),
+  check('password', 'Set Minimum password length to at least a value of 6.')
+    .not()
+    .isEmpty()
+    .trim()
+    .isLength({ min: 6 }),
+];
+
+router.route('/getAllUsers').get(isAuth, getAllUsers);
 router.route('/:id').get(getUser).patch(updateUser);
-router.route('/signup').post(
-  [
-    // @TODO Refactor this into function
-    check('email', 'Please provide correct email').not().isEmpty().trim().toLowerCase().isEmail().normalizeEmail(),
-    check('password', 'Set Minimum password length to at least a value of 6.')
-      .not()
-      .isEmpty()
-      .trim()
-      .isLength({ min: 6 }),
-  ],
-  signup
-);
-router.route('/login').post(login);
+router.route('/signup').post(validationChain, signup);
+router.route('/login').post(validationChain, login);

@@ -51,7 +51,8 @@
       { "blankLine": "always", "prev": ["const", "let"], "next": "expression" }
     ],
     "unicorn/filename-case": "off",
-    "consistent-return": "warn"
+    "consistent-return": "warn",
+    "prefer-destructuring": "off"
   },
   "settings": {
     "import/resolver": {

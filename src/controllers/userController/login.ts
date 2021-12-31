@@ -17,6 +17,7 @@ export const login = async (request: RequestUser, response: Response, next: Next
   }
 
   // 2) Check if the user exist
+  // TODO Duplicated Code
   const isUserExists = await User.findOne({ email });
 
   if (!isUserExists) {
@@ -41,7 +42,7 @@ export const login = async (request: RequestUser, response: Response, next: Next
 
   // 4) Send jwt to client
   if (process.env.JWT_SECRET) {
-    const token = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPERES_IN });
+    const token = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
 
     return response.status(200).json({
       status: 'Success',

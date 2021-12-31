@@ -53,7 +53,7 @@ export const signup = async (request: RequestUser, response: Response) => {
     newUser.encryptedPassword = '';
 
     if (process.env.JWT_SECRET) {
-      const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPERES_IN });
+      const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
 
       return response.status(201).json({
         status: 'Success',
