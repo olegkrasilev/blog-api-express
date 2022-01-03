@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('user')
 export class User extends BaseEntity {
@@ -12,4 +12,7 @@ export class User extends BaseEntity {
 
   @Column()
   encryptedPassword: string;
+
+  @CreateDateColumn()
+  passwordChangedAt: Date;
 }
