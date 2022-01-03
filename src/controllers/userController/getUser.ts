@@ -6,6 +6,7 @@ export const getUser = async (request: Request, response: Response) => {
 
   const isUserExists = await User.findOne(userId);
 
+  // TODO duplicated code
   if (!isUserExists) {
     return response.status(400).json({
       status: 'fail',

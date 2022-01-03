@@ -29,7 +29,7 @@ export const signup = async (request: RequestUser, response: Response) => {
   }
 
   //  Check if this user exits
-
+  // TODO duplicated code
   const isUserExists = await User.findOne({ email });
 
   if (isUserExists) {

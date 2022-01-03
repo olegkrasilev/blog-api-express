@@ -52,7 +52,8 @@
     ],
     "unicorn/filename-case": "off",
     "consistent-return": "warn",
-    "prefer-destructuring": "off"
+    "prefer-destructuring": "off",
+    "unicorn/prefer-node-protocol": "off"
   },
   "settings": {
     "import/resolver": {

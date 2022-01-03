@@ -13,6 +13,12 @@ export class User extends BaseEntity {
   @Column()
   encryptedPassword: string;
 
-  @CreateDateColumn()
+  @Column({ nullable: true })
   passwordChangedAt: Date;
+
+  @Column({ nullable: true })
+  passwordResetToken: string;
+
+  @Column({ nullable: true })
+  passwordResetExpires: Date;
 }

@@ -5,6 +5,7 @@ import { getUser } from '@src/controllers/userController/getUser';
 import express from 'express';
 import { check } from 'express-validator';
 import { login } from '@src/controllers/userController/login';
+import { forgotPassword } from '../controllers/userController/forgotPassword';
 import { isAuth } from '../middleware/isAuth';
 
 export const router = express.Router();
@@ -22,3 +23,4 @@ router.route('/getAllUsers').get(isAuth, getAllUsers);
 router.route('/:id').get(getUser).patch(updateUser);
 router.route('/signup').post(validationChain, signup);
 router.route('/login').post(validationChain, login);
+router.route('/forgotPassword').post(forgotPassword);
