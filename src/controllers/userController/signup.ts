@@ -1,6 +1,6 @@
+import { RequestUser } from '@src/types/index';
 import jwt from 'jsonwebtoken';
 import { validationResult } from 'express-validator';
-import { RequestUser } from '@src/types/index';
 import bcrypt from 'bcrypt';
 import { Response } from 'express';
 import { User } from '@src/models/entities/User';
@@ -41,25 +41,23 @@ export const signup = async (request: RequestUser, response: Response) => {
 
   //  Encrypt password and create user
 
-  if (password) {
-    const encryptedPassword = await bcrypt.hash(password, 12);
-    const newUser = User.create({
-      email,
-      encryptedPassword,
+  const encryptedPassword = await bcrypt.hash(password, 12);
+  const newUser = User.create({
+    email,
+    encryptedPassword,
+  });
+
+  await newUser.save();
+
+  newUser.encryptedPassword = '';
+
+  if (process.env.JWT_SECRET) {
+    const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+
+    return response.status(201).json({
+      status: 'Success',
+      token,
+      data: newUser,
     });
-
-    await newUser.save();
-
-    newUser.encryptedPassword = '';
-
-    if (process.env.JWT_SECRET) {
-      const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
-
-      return response.status(201).json({
-        status: 'Success',
-        token,
-        data: newUser,
-      });
-    }
   }
 };

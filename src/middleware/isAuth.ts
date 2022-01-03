@@ -1,9 +1,8 @@
 import { User } from '@src/models/entities/User';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import { RequestUser } from '../types/index';
 
-export const isAuth = async (request: RequestUser, response: Response, next: NextFunction) => {
+export const isAuth = async (request: Request, response: Response, next: NextFunction) => {
   // Check the token
   // TODO moved into type file
   let token: string | undefined;
@@ -31,9 +30,9 @@ export const isAuth = async (request: RequestUser, response: Response, next: Nex
   const decodedId = [decodedToken?.id];
 
   // Check if user still exists
-  const freshUser = await User.findByIds(decodedId);
+  const isUserExists = await User.findByIds(decodedId);
 
-  if (freshUser.length === 0) {
+  if (isUserExists.length === 0) {
     return response.status(401).json({
       status: 'fail',
       message: 'The user belonging to this token does not longer exist',
@@ -43,7 +42,7 @@ export const isAuth = async (request: RequestUser, response: Response, next: Nex
   // Check if user changed password after the JWT was issued
   const JWTTimeStamp = decodedToken?.iat;
 
-  const passwordChangedAt = freshUser[0].passwordChangedAt;
+  const passwordChangedAt = isUserExists[0].passwordChangedAt;
   const changedTimeStamp = Number.parseInt((passwordChangedAt.getTime() / 1000).toString(), 10);
 
   // TODO moved into type file
@@ -53,8 +52,6 @@ export const isAuth = async (request: RequestUser, response: Response, next: Nex
     isUserChangedPassword = JWTTimeStamp < changedTimeStamp;
   }
 
-  console.log(JWTTimeStamp, changedTimeStamp);
-
   if (isUserChangedPassword) {
     return response.status(401).json({
       status: 'fail',
@@ -62,5 +59,5 @@ export const isAuth = async (request: RequestUser, response: Response, next: Nex
     });
   }
 
-  next();
+  return next();
 };
