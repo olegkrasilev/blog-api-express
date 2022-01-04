@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import { Response } from 'express';
 import { validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
+
 import { User } from '@src/models/entities/User';
 import { RequestUser } from '@src/types/index';
 

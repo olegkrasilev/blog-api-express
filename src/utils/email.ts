@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+
 import { MailOptions } from '../types/index';
 
 export const sendEmail = async (options: { email: string; subject: string; message: string }) => {

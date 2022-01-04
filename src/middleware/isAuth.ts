@@ -1,6 +1,7 @@
-import { User } from '@src/models/entities/User';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
+
+import { User } from '@src/models/entities/User';
 import { IsUserChangedPassword, DecodedToken, Token } from '@src/types/index';
 
 export const isAuth = async (request: Request, response: Response, next: NextFunction) => {

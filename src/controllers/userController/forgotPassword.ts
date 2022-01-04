@@ -1,8 +1,10 @@
-import { User } from '@src/models/entities/User';
 import crypto from 'crypto';
-import { RequestUser } from '@src/types/index';
+
 import { Response, NextFunction } from 'express';
 import { getManager } from 'typeorm';
+
+import { RequestUser } from '@src/types/index';
+import { User } from '@src/models/entities/User';
 import { sendEmail } from '@src/utils/email';
 
 export const forgotPassword = async (request: RequestUser, response: Response, next: NextFunction) => {

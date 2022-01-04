@@ -1,6 +1,7 @@
-import { User } from '@src/models/entities/User';
 import { createConnection } from 'typeorm';
 import dotenv from 'dotenv';
+
+import { User } from '@src/models/entities/User';
 
 dotenv.config();
 

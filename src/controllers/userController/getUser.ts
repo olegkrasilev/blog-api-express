@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+
 import { User } from '@src/models/entities/User';
 
 export const getUser = async (request: Request, response: Response) => {

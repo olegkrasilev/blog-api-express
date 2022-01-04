@@ -1,9 +1,11 @@
-import { User } from '@src/models/entities/User';
-import { NextFunction, Request, Response } from 'express';
 import crypto from 'crypto';
+
+import { NextFunction, Request, Response } from 'express';
 import { getManager } from 'typeorm';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+
+import { User } from '@src/models/entities/User';
 
 export const resetPassword = async (request: Request, response: Response, next: NextFunction) => {
   // 1) Get user based on the token

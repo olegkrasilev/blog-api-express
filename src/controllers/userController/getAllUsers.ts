@@ -1,5 +1,6 @@
-import { User } from '@src/models/entities/User';
 import { Request, Response } from 'express';
+
+import { User } from '@src/models/entities/User';
 
 export const getAllUsers = async (request: Request, response: Response) => {
   const allUsers = await User.find();

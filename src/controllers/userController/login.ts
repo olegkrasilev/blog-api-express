@@ -1,8 +1,10 @@
-import { User } from '@src/models/entities/User';
 import { Response, NextFunction } from 'express';
-import { RequestUser } from '@src/types/index';
+
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+
+import { RequestUser } from '@src/types/index';
+import { User } from '@src/models/entities/User';
 
 export const login = async (request: RequestUser, response: Response, next: NextFunction) => {
   const { email, password } = request.body;
