@@ -1,9 +1,9 @@
-import { RequestUser } from '@src/types/index';
-import jwt from 'jsonwebtoken';
-import { validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
 import { Response } from 'express';
+import { validationResult } from 'express-validator';
+import jwt from 'jsonwebtoken';
 import { User } from '@src/models/entities/User';
+import { RequestUser } from '@src/types/index';
 
 export const signup = async (request: RequestUser, response: Response) => {
   const { email, password } = request.body;

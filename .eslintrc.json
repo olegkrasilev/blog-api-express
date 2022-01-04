@@ -45,7 +45,6 @@
     "unicorn/no-process-exit": "off",
     "padding-line-between-statements": [
       "error",
-      { "blankLine": "never", "prev": "import", "next": "import" },
       { "blankLine": "always", "prev": "*", "next": ["return", "function", "if", "export", "switch"] },
       { "blankLine": "always", "prev": ["if", "switch"], "next": "*" },
       { "blankLine": "always", "prev": ["const", "let"], "next": "expression" }
@@ -53,7 +52,18 @@
     "unicorn/filename-case": "off",
     "consistent-return": "warn",
     "prefer-destructuring": "off",
-    "unicorn/prefer-node-protocol": "off"
+    "unicorn/prefer-node-protocol": "off",
+    "import/order": [
+      "warn",
+      {
+        "alphabetize": {
+          "caseInsensitive": true,
+          "order": "asc"
+        },
+        "groups": ["builtin", "external", "index", "sibling", "parent", "internal"]
+      }
+    ],
+    "import/order": ["error", { "newlines-between": "always-and-inside-groups" }]
   },
   "settings": {
     "import/resolver": {

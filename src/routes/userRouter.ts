@@ -1,12 +1,15 @@
-import { signup } from '@src/controllers/userController/signup';
-import { getAllUsers } from '@src/controllers/userController/getAllUsers';
-import { getUser } from '@src/controllers/userController/getUser';
 import express from 'express';
 import { check } from 'express-validator';
-import { login } from '@src/controllers/userController/login';
-import { resetPassword } from '../controllers/userController/resetPassword';
-import { forgotPassword } from '../controllers/userController/forgotPassword';
+
 import { isAuth } from '../middleware/isAuth';
+
+import { forgotPassword } from '@src/controllers/userController/forgotPassword';
+import { getAllUsers } from '@src/controllers/userController/getAllUsers';
+import { getUser } from '@src/controllers/userController/getUser';
+import { login } from '@src/controllers/userController/login';
+import { resetPassword } from '@src/controllers/userController/resetPassword';
+import { signup } from '@src/controllers/userController/signup';
+import { updatePassword } from '@src/controllers/userController/updatePassword';
 
 export const router = express.Router();
 
@@ -25,3 +28,4 @@ router.route('/:id').get(getUser);
 router.route('/signup').post(validationChain, signup);
 router.route('/login').post(validationChain, login);
 router.route('/forgotPassword').post(forgotPassword);
+router.route('/updatePassword').patch(isAuth, updatePassword);
