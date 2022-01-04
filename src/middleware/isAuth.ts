@@ -1,11 +1,13 @@
 import { User } from '@src/models/entities/User';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
+import { IsUserChangedPassword, DecodedToken, Token } from '@src/types/index';
 
 export const isAuth = async (request: Request, response: Response, next: NextFunction) => {
   // Check the token
-  // TODO moved into type file
-  let token: string | undefined;
+  let token: Token;
+  let isUserChangedPassword: IsUserChangedPassword;
+  let decodedToken: DecodedToken;
 
   if (request.headers.authorization?.startsWith('Bearer')) {
     token = request.headers.authorization.split(' ')[1];
@@ -19,8 +21,6 @@ export const isAuth = async (request: Request, response: Response, next: NextFun
   }
 
   // Verification token
-  // TODO moved into type file
-  let decodedToken: JwtPayload | undefined;
 
   if (process.env.JWT_SECRET) {
     // TODO handle jwt error
@@ -44,9 +44,6 @@ export const isAuth = async (request: Request, response: Response, next: NextFun
 
   const passwordChangedAt = isUserExists[0].passwordChangedAt;
   const changedTimeStamp = Number.parseInt((passwordChangedAt.getTime() / 1000).toString(), 10);
-
-  // TODO moved into type file
-  let isUserChangedPassword: boolean | undefined;
 
   if (JWTTimeStamp) {
     isUserChangedPassword = JWTTimeStamp < changedTimeStamp;
