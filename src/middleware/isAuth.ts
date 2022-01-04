@@ -43,9 +43,13 @@ export const isAuth = async (request: Request, response: Response, next: NextFun
   const JWTTimeStamp = decodedToken?.iat;
 
   const passwordChangedAt = isUserExists[0].passwordChangedAt;
-  const changedTimeStamp = Number.parseInt((passwordChangedAt.getTime() / 1000).toString(), 10);
+  let changedTimeStamp: number | undefined;
 
-  if (JWTTimeStamp) {
+  if (changedTimeStamp) {
+    changedTimeStamp = Number.parseInt((passwordChangedAt.getTime() / 1000).toString(), 10);
+  }
+
+  if (JWTTimeStamp && changedTimeStamp) {
     isUserChangedPassword = JWTTimeStamp < changedTimeStamp;
   }
 
