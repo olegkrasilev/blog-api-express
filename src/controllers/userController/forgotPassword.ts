@@ -39,7 +39,7 @@ export const forgotPassword = async (request: RequestUser, response: Response, n
 
   const resetURL = `${request.protocol}://${request.get('host')}/api/v1/users/resetPassword/${resetToken}`;
 
-  const message = `Forgot your password? Submit a PATCH request with your new password to: ${resetURL}.
+  const message = `Forgot your password? Submit a PATCH request with your new password to: \n${resetURL}\n
   \n If you did not forget your password, please ingore this email`;
 
   try {

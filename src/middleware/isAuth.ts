@@ -43,9 +43,10 @@ export const isAuth = async (request: Request, response: Response, next: NextFun
   const JWTTimeStamp = decodedToken?.iat;
 
   const passwordChangedAt = isUserExists[0].passwordChangedAt;
+  // TODO Move to type file
   let changedTimeStamp: number | undefined;
 
-  if (changedTimeStamp) {
+  if (passwordChangedAt) {
     changedTimeStamp = Number.parseInt((passwordChangedAt.getTime() / 1000).toString(), 10);
   }
 
