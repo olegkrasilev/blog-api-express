@@ -3,6 +3,7 @@ import { Response, NextFunction } from 'express';
 import { RequestUser } from '@src/types/index';
 import crypto from 'crypto';
 import { getManager } from 'typeorm';
+import { sendEmail } from '../../utils/email';
 
 export const forgotPassword = async (request: RequestUser, response: Response, next: NextFunction) => {
   const entityManager = getManager();
@@ -24,7 +25,7 @@ export const forgotPassword = async (request: RequestUser, response: Response, n
 
   const passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
 
-  // Added 10 minutes to current time
+  // Add 10 minutes to current time
   const now = new Date();
   const tenMinutes = 10 * 60_000;
   const passwordResetExpires = new Date(now.getTime() + tenMinutes);
@@ -35,4 +36,31 @@ export const forgotPassword = async (request: RequestUser, response: Response, n
   await entityManager.save(user);
 
   // 3) Send it to user as email
+
+  const resetURL = `${request.protocol}://${request.get('host')}/api/v1/users/resetPassword/${resetToken}`;
+
+  const message = `Forgot your password? Submit a PATCH request with your new password to: ${resetURL}.
+  \n If you did not forget your password, please ingore this email`;
+
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: 'Your password reset token (valid for 10 minutes)',
+      message,
+    });
+
+    return response.status(200).json({
+      status: 'success',
+      message: 'Token sent to email',
+    });
+  } catch {
+    user.passwordResetToken = '';
+    user.passwordResetExpires = '' as unknown as Date;
+    await entityManager.save(user);
+
+    return response.status(500).json({
+      status: 'fail',
+      message: 'There was an error sending the email, Try again later',
+    });
+  }
 };
