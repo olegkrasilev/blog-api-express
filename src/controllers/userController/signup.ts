@@ -52,8 +52,21 @@ export const signup = async (request: RequestUser, response: Response) => {
 
   newUser.encryptedPassword = '';
 
-  if (process.env.JWT_SECRET) {
+  // TODO refactor this into single function
+  if (process.env.JWT_SECRET && process.env.JWT_COOKIE_EXPIRES_IN) {
     const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+
+    const cookieOptions = {
+      expires: new Date(Date.now() + Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000),
+      httpOnly: true,
+      secure: false,
+    };
+
+    if (process.env.NODE_ENV === 'production') {
+      cookieOptions.secure = true;
+    }
+
+    response.cookie('jwt', token, cookieOptions);
 
     return response.status(201).json({
       status: 'Success',
