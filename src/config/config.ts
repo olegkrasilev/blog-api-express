@@ -1,11 +1,15 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 export const config = {
   db: {
-    user: process.env.USER || 'user',
+    username: process.env.USER || 'user',
     password: process.env.PASSWORD || 'password',
-    name: process.env.DATABASE || 'name',
+    database: process.env.DATABASE || 'name',
     type: process.env.DBTYPE || 'db',
     host: process.env.DBHOST || 'host',
-    port: process.env.DBHOST || 'port',
+    port: process.env.DBPORT || 'port',
   },
   jwt: {
     jwtSecret: process.env.JWT_SECRET || 'secret',
