@@ -1,7 +1,9 @@
 import express from 'express';
 import { check } from 'express-validator';
 
-import { isAuth } from '../middleware/isAuth';
+import { isAuth } from '@src/middleware/isAuth';
+
+import { updateUser } from '@src/controllers/userController/updateUser';
 
 import { forgotPassword } from '@src/controllers/userController/forgotPassword';
 import { getAllUsers } from '@src/controllers/userController/getAllUsers';
@@ -29,3 +31,4 @@ router.route('/signup').post(validationChain, signup);
 router.route('/login').post(validationChain, login);
 router.route('/forgotPassword').post(forgotPassword);
 router.route('/updatePassword').patch(isAuth, updatePassword);
+router.route('/updateUser').patch(isAuth, updateUser);
