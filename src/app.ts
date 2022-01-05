@@ -4,6 +4,9 @@ import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 
+import { errorHandler } from './controllers/errorController/errorController';
+
+import { AppError } from '@src/utils/appError';
 import { router as userRouter } from '@src/routes/userRouter';
 
 export const app = express();
@@ -24,9 +27,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/api/v1/users', userRouter);
 
-app.all('*', (request, response) => {
-  response.status(404).json({
-    status: 'fail',
-    data: `Can't find ${request.url} on this website`,
-  });
+app.all('*', (request, response, next) => {
+  next(new AppError(`Can't find ${request.url} on this website`, 404));
 });
+
+app.use(errorHandler);
