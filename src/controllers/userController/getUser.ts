@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 
+import { tryCatch } from '@src/utils/tryCatch';
+
 import { User } from '@src/models/entities/User';
 
-export const getUser = async (request: Request, response: Response) => {
+export const getUser = tryCatch(async (request: Request, response: Response) => {
   const userId = request.params;
 
   const isUserExists = await User.findOne(userId);
@@ -21,4 +23,4 @@ export const getUser = async (request: Request, response: Response) => {
     status: 'Success',
     data: userEmail,
   });
-};
+});
