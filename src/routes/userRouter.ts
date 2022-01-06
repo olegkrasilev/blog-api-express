@@ -1,6 +1,12 @@
 import express from 'express';
-import { check } from 'express-validator';
 
+import {
+  validatePassword,
+  validateEmailPassword,
+  validateEmail,
+  validationChain,
+  validateNewPassword,
+} from '@src/routes/validateRoutes';
 import { isAuth } from '@src/middleware/isAuth';
 import { updateUser } from '@src/controllers/userController/updateUser';
 import { forgotPassword } from '@src/controllers/userController/forgotPassword';
@@ -13,41 +19,6 @@ import { updatePassword } from '@src/controllers/userController/updatePassword';
 import { deleteUser } from '@src/controllers/userController/deleteUser';
 
 export const router = express.Router();
-
-const validateEmail = check('email', 'Please provide correct email')
-  .not()
-  .isEmpty()
-  .trim()
-  .blacklist('\\[\\]')
-  .escape()
-  .toLowerCase()
-  .isEmail()
-  .normalizeEmail();
-
-const validatePassword = check('password', 'Set Minimum password length to at least a value of 6.')
-  .not()
-  .isEmpty()
-  .trim()
-  .blacklist('\\[\\]')
-  .escape()
-  .isLength({ min: 6 });
-
-const validateNewPassword = check('newPassword', 'Set Minimum password length to at least a value of 6.')
-  .not()
-  .isEmpty()
-  .trim()
-  .blacklist('\\[\\]')
-  .escape()
-  .isLength({ min: 6 });
-
-const validateEmailPassword = [validateEmail, validatePassword];
-
-const validationChain = [
-  validateEmail,
-  check('firstName', 'Please provide correct first name').not().isEmpty().trim().blacklist('\\[\\]').escape(),
-  check('lastName', 'Please provide correct first name').not().isEmpty().trim().blacklist('\\[\\]').escape(),
-  validatePassword,
-];
 
 router.route('/getAllUsers').get(isAuth, getAllUsers);
 router.route('/resetPassword/:token').patch(validatePassword, resetPassword);
