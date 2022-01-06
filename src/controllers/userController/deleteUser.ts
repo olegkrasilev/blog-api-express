@@ -18,8 +18,6 @@ export const deleteUser = tryCatch(async (request: RequestUser, response: Respon
     return next(new AppError('User ID should be a number', 400));
   }
 
-  const [user] = await User.findByIds([id]);
-
   await entityManager.delete(User, id);
 
   return response.status(204).json({
