@@ -68,9 +68,6 @@ export const forgotPassword = tryCatch(async (request: RequestUser, response: Re
     user.passwordResetExpires = '' as unknown as Date;
     await entityManager.save(user);
 
-    return response.status(500).json({
-      status: 'fail',
-      message: 'There was an error sending the email, Try again later',
-    });
+    return next(new AppError('There was an error sending the email, Try again later', 500));
   }
 });

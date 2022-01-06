@@ -2,12 +2,15 @@ import crypto from 'crypto';
 
 import { NextFunction, Request, Response } from 'express';
 import { getManager } from 'typeorm';
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { validationResult } from 'express-validator';
 
+import { createAccessToken } from '@src/utils/createTokenJWT';
+import { tryCatch } from '@src/utils/tryCatch';
+import { AppError } from '@src/utils/appError';
 import { User } from '@src/models/entities/User';
 
-export const resetPassword = async (request: Request, response: Response, next: NextFunction) => {
+export const resetPassword = tryCatch(async (request: Request, response: Response, next: NextFunction) => {
   // 1) Get user based on the token
   const resetToken = request.params.token;
 
@@ -15,21 +18,29 @@ export const resetPassword = async (request: Request, response: Response, next: 
 
   const user = await User.findOne({ passwordResetToken: hashedToken });
 
-  // TODO duplicated code
   if (!user) {
-    return response.status(400).json({
-      status: 'fail',
-      data: 'This user does not exist',
-    });
+    return next(new AppError('This user does not exist', 404));
   }
 
   // 2) If token has not expired, and there is user, set the new resetPassword
   const now = new Date();
   const entityManager = getManager();
   const newPassword = request.body.password;
+
+  // Validate request for errors with Express-validator
+  const errors = validationResult(request);
+
+  if (!errors.isEmpty()) {
+    return response.status(400).json({
+      status: 'fail',
+      errors: errors.array(),
+    });
+  }
+
   const { id, passwordResetExpires } = user;
   const newEncryptedPassword = await bcrypt.hash(newPassword, 12);
 
+  // 3) Update changedPassword property for the current user
   if (passwordResetExpires > now) {
     user.encryptedPassword = newEncryptedPassword;
     // Subtract 1 second to make this condition work : isUserChangedPassword = JWTTimeStamp < changedTimeStamp;
@@ -39,16 +50,11 @@ export const resetPassword = async (request: Request, response: Response, next: 
     await entityManager.save(user);
   }
 
-  // 3) Update changedPassword property for the current user
   // 4) Log the user in, send the JWT
-  if (process.env.JWT_SECRET) {
-    const token = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+  const token = createAccessToken(id);
 
-    return response.status(200).json({
-      status: 'Success',
-      token,
-    });
-  }
-
-  next();
-};
+  return response.status(200).json({
+    status: 'Success',
+    token,
+  });
+});
