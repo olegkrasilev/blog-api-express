@@ -2,29 +2,37 @@ import crypto from 'crypto';
 
 import { Response, NextFunction } from 'express';
 import { getManager } from 'typeorm';
+import { validationResult } from 'express-validator';
 
+import { AppError } from '@src/utils/appError';
+import { tryCatch } from '@src/utils/tryCatch';
 import { RequestUser } from '@src/types/index';
 import { User } from '@src/models/entities/User';
 import { sendEmail } from '@src/utils/email';
 
-export const forgotPassword = async (request: RequestUser, response: Response, next: NextFunction) => {
+export const forgotPassword = tryCatch(async (request: RequestUser, response: Response, next: NextFunction) => {
   const entityManager = getManager();
   const { email } = request.body;
+
+  // Validate request for errors with Express-validator
+  const errors = validationResult(request);
+
+  if (!errors.isEmpty()) {
+    return response.status(400).json({
+      status: 'fail',
+      errors: errors.array(),
+    });
+  }
 
   // 1) Get user based on Posted email
   const user = await entityManager.findOne(User, { email });
 
-  // TODO duplicated code
   if (!user) {
-    return response.status(404).json({
-      status: 'fail',
-      data: 'There is no user',
-    });
+    return next(new AppError('There is no user', 404));
   }
 
   // 2) Generate random token
   const resetToken = crypto.randomBytes(32).toString('hex');
-
   const passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
 
   // Add 10 minutes to current time
@@ -65,4 +73,4 @@ export const forgotPassword = async (request: RequestUser, response: Response, n
       message: 'There was an error sending the email, Try again later',
     });
   }
-};
+});

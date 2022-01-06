@@ -14,6 +14,16 @@ import { deleteUser } from '@src/controllers/userController/deleteUser';
 
 export const router = express.Router();
 
+const validateEmail = check('email', 'Please provide correct email')
+  .not()
+  .isEmpty()
+  .trim()
+  .blacklist('\\[\\]')
+  .escape()
+  .toLowerCase()
+  .isEmail()
+  .normalizeEmail();
+
 const validationChain = [
   check('email', 'Please provide correct email')
     .not()
@@ -40,7 +50,7 @@ router.route('/resetPassword/:token').patch(validationChain, resetPassword);
 router.route('/:id').get(getUser);
 router.route('/signup').post(validationChain, signup);
 router.route('/login').post(validationChain, login);
-router.route('/forgotPassword').post(forgotPassword);
+router.route('/forgotPassword').post(validateEmail, forgotPassword);
 router.route('/updatePassword').patch(isAuth, updatePassword);
 router.route('/updateUser').patch(isAuth, updateUser);
 router.route('/deleteUser').delete(isAuth, deleteUser);
