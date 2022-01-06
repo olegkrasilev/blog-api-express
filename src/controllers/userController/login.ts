@@ -1,32 +1,36 @@
 import { Response, NextFunction } from 'express';
-
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import { validationResult } from 'express-validator';
 
+import { createAccessToken } from '@src/utils/createTokenJWT';
+import { tryCatch } from '@src/utils/tryCatch';
+import { AppError } from '@src/utils/appError';
 import { RequestUser } from '@src/types/index';
 import { User } from '@src/models/entities/User';
 
-export const login = async (request: RequestUser, response: Response, next: NextFunction) => {
+export const login = tryCatch(async (request: RequestUser, response: Response, next: NextFunction) => {
   const { email, password } = request.body;
 
-  // 1) Check if email and password exist
-  // TODO Duplicated Code
   if (!(email && password)) {
+    return next(new AppError('Please provide email and password', 400));
+  }
+
+  // Validate request for errors with Express-validator
+  // 1) Check if email and password exist
+  const errors = validationResult(request);
+
+  if (!errors.isEmpty()) {
     return response.status(400).json({
       status: 'fail',
-      data: 'All input is required',
+      errors: errors.array(),
     });
   }
 
   // 2) Check if the user exist
-  // TODO Duplicated Code
   const isUserExists = await User.findOne({ email });
 
   if (!isUserExists) {
-    return response.status(400).json({
-      status: 'fail',
-      data: 'This user does not exist',
-    });
+    return next(new AppError('This user does not exist', 404));
   }
 
   const { encryptedPassword } = isUserExists;
@@ -36,19 +40,14 @@ export const login = async (request: RequestUser, response: Response, next: Next
   const isPasswordCorrect = await bcrypt.compare(password, encryptedPassword);
 
   if (!isUserExists || !isPasswordCorrect) {
-    return response.status(401).json({
-      status: 'fail',
-      data: 'Incorrect email or password',
-    });
+    return next(new AppError('Incorrect email or password', 401));
   }
 
   // 4) Send jwt to client
-  if (process.env.JWT_SECRET) {
-    const token = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+  const token = createAccessToken(id);
 
-    return response.status(200).json({
-      status: 'Success',
-      token,
-    });
-  }
-};
+  return response.status(200).json({
+    status: 'Success',
+    token,
+  });
+});

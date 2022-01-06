@@ -24,32 +24,28 @@ const validateEmail = check('email', 'Please provide correct email')
   .isEmail()
   .normalizeEmail();
 
+const validatePassword = check('password', 'Set Minimum password length to at least a value of 6.')
+  .not()
+  .isEmpty()
+  .trim()
+  .blacklist('\\[\\]')
+  .escape()
+  .isLength({ min: 6 });
+
+const validateEmailPassword = [validateEmail, validatePassword];
+
 const validationChain = [
-  check('email', 'Please provide correct email')
-    .not()
-    .isEmpty()
-    .trim()
-    .blacklist('\\[\\]')
-    .escape()
-    .toLowerCase()
-    .isEmail()
-    .normalizeEmail(),
+  validateEmail,
   check('firstName', 'Please provide correct first name').not().isEmpty().trim().blacklist('\\[\\]').escape(),
   check('lastName', 'Please provide correct first name').not().isEmpty().trim().blacklist('\\[\\]').escape(),
-  check('password', 'Set Minimum password length to at least a value of 6.')
-    .not()
-    .isEmpty()
-    .trim()
-    .blacklist('\\[\\]')
-    .escape()
-    .isLength({ min: 6 }),
+  validatePassword,
 ];
 
 router.route('/getAllUsers').get(isAuth, getAllUsers);
 router.route('/resetPassword/:token').patch(validationChain, resetPassword);
 router.route('/:id').get(isAuth, getUser);
 router.route('/signup').post(validationChain, signup);
-router.route('/login').post(validationChain, login);
+router.route('/login').post(validateEmailPassword, login);
 router.route('/forgotPassword').post(validateEmail, forgotPassword);
 router.route('/updatePassword').patch(isAuth, updatePassword);
 router.route('/updateUser').patch(isAuth, updateUser);
