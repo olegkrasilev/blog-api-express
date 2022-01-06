@@ -1,12 +1,14 @@
 import express from 'express';
 
 import {
+  validateFirstLastNameEmail,
   validatePassword,
   validateEmailPassword,
   validateEmail,
   validationChain,
-  validateNewPassword,
+  validatePasswordAndNewPassword,
 } from '@src/routes/validateRoutes';
+
 import { isAuth } from '@src/middleware/isAuth';
 import { updateUser } from '@src/controllers/userController/updateUser';
 import { forgotPassword } from '@src/controllers/userController/forgotPassword';
@@ -26,6 +28,6 @@ router.route('/:id').get(isAuth, getUser);
 router.route('/signup').post(validationChain, signup);
 router.route('/login').post(validateEmailPassword, login);
 router.route('/forgotPassword').post(validateEmail, forgotPassword);
-router.route('/updatePassword').patch(isAuth, validatePassword, validateNewPassword, updatePassword);
-router.route('/updateUser').patch(isAuth, updateUser);
+router.route('/updatePassword').patch(isAuth, validatePasswordAndNewPassword, updatePassword);
+router.route('/updateUser').patch(isAuth, validateFirstLastNameEmail, updateUser);
 router.route('/deleteUser').delete(isAuth, deleteUser);

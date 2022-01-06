@@ -26,11 +26,24 @@ export const validateNewPassword = check('newPassword', 'Set Minimum password le
   .escape()
   .isLength({ min: 6 });
 
+export const validateFirstName = check('firstName', 'Please provide correct first name')
+  .not()
+  .isEmpty()
+  .trim()
+  .blacklist('\\[\\]')
+  .escape();
+
+export const validateLastName = check('lastName', 'Please provide correct first name')
+  .not()
+  .isEmpty()
+  .trim()
+  .blacklist('\\[\\]')
+  .escape();
+
 export const validateEmailPassword = [validateEmail, validatePassword];
 
-export const validationChain = [
-  validateEmail,
-  check('firstName', 'Please provide correct first name').not().isEmpty().trim().blacklist('\\[\\]').escape(),
-  check('lastName', 'Please provide correct first name').not().isEmpty().trim().blacklist('\\[\\]').escape(),
-  validatePassword,
-];
+export const validateFirstLastNameEmail = [validateFirstName, validateLastName, validateEmail];
+
+export const validatePasswordAndNewPassword = [validatePassword, validateNewPassword];
+
+export const validationChain = [validateEmail, validateFirstName, validateLastName, validatePassword];
