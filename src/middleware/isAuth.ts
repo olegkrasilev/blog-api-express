@@ -1,10 +1,12 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 
+import { tryCatch } from '../utils/tryCatch';
+
 import { User } from '@src/models/entities/User';
 import { IsUserChangedPassword, DecodedToken, Token } from '@src/types/index';
 
-export const isAuth = async (request: Request, response: Response, next: NextFunction) => {
+export const isAuth = tryCatch(async (request: Request, response: Response, next: NextFunction) => {
   // Check the token
   let token: Token;
   let isUserChangedPassword: IsUserChangedPassword;
@@ -63,4 +65,4 @@ export const isAuth = async (request: Request, response: Response, next: NextFun
   }
 
   return next();
-};
+});

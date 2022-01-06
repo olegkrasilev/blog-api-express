@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 
+import { tryCatch } from '@src/utils/tryCatch';
 import { User } from '@src/models/entities/User';
 
-export const getAllUsers = async (request: Request, response: Response) => {
+export const getAllUsers = tryCatch(async (request: Request, response: Response) => {
   const allUsers = await User.find();
 
   if (allUsers.length === 0) {
@@ -19,4 +20,4 @@ export const getAllUsers = async (request: Request, response: Response) => {
     length: allUsersEmail.length,
     data: allUsersEmail,
   });
-};
+});

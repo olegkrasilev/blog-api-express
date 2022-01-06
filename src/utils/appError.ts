@@ -5,7 +5,7 @@ export class AppError extends Error {
 
   isOperational: true;
 
-  driverError: { code: string };
+  driverError?: { code: string };
 
   constructor(message: string, statusCode: number) {
     super(message);
