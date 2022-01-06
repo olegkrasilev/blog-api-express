@@ -5,8 +5,10 @@ export interface RequestUser extends Request {
   body: {
     email: string | undefined;
     password: string | undefined;
-    id?: number | undefined;
-    newPassword?: string | undefined;
+    id: number | undefined;
+    newPassword: string | undefined;
+    firstName: string | undefined;
+    lastName: string | undefined;
   };
 }
 

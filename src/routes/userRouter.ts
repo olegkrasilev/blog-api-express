@@ -15,11 +15,23 @@ import { deleteUser } from '@src/controllers/userController/deleteUser';
 export const router = express.Router();
 
 const validationChain = [
-  check('email', 'Please provide correct email').not().isEmpty().trim().toLowerCase().isEmail().normalizeEmail(),
+  check('email', 'Please provide correct email')
+    .not()
+    .isEmpty()
+    .trim()
+    .blacklist('\\[\\]')
+    .escape()
+    .toLowerCase()
+    .isEmail()
+    .normalizeEmail(),
+  check('firstName', 'Please provide correct first name').not().isEmpty().trim().blacklist('\\[\\]').escape(),
+  check('lastName', 'Please provide correct first name').not().isEmpty().trim().blacklist('\\[\\]').escape(),
   check('password', 'Set Minimum password length to at least a value of 6.')
     .not()
     .isEmpty()
     .trim()
+    .blacklist('\\[\\]')
+    .escape()
     .isLength({ min: 6 }),
 ];
 

@@ -1,24 +1,24 @@
 import bcrypt from 'bcrypt';
-import { Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { validationResult } from 'express-validator';
-import jwt from 'jsonwebtoken';
 
+import { createAccessToken } from '../../utils/createTokenJWT';
+
+import { AppError } from '@src/utils/appError';
+import { tryCatch } from '@src/utils/tryCatch';
 import { User } from '@src/models/entities/User';
 import { RequestUser } from '@src/types/index';
 
-export const signup = async (request: RequestUser, response: Response) => {
-  const { email, password } = request.body;
+export const signup = tryCatch(async (request: RequestUser, response: Response, next: NextFunction) => {
+  const { email, password, firstName, lastName } = request.body;
 
   // Validate user input
 
-  if (!(email && password)) {
-    return response.status(400).json({
-      status: 'fail',
-      data: 'All input is required',
-    });
+  if (!(email && password && firstName && lastName)) {
+    return next(new AppError('All input is required: email, password, firstName, lastName', 400));
   }
 
-  // Validate request for errors
+  // Validate request for errors with Express-validator
 
   const errors = validationResult(request);
 
@@ -30,14 +30,10 @@ export const signup = async (request: RequestUser, response: Response) => {
   }
 
   //  Check if this user exits
-  // TODO duplicated code
   const isUserExists = await User.findOne({ email });
 
   if (isUserExists) {
-    return response.status(409).json({
-      status: 'fail',
-      data: 'This user already exist',
-    });
+    return next(new AppError('This user already exist', 409));
   }
 
   //  Encrypt password and create user
@@ -45,33 +41,25 @@ export const signup = async (request: RequestUser, response: Response) => {
   const encryptedPassword = await bcrypt.hash(password, 12);
   const newUser = User.create({
     email,
+    firstName,
+    lastName,
     encryptedPassword,
   });
 
   await newUser.save();
 
-  newUser.encryptedPassword = '';
-
   // TODO refactor this into single function
-  if (process.env.JWT_SECRET && process.env.JWT_COOKIE_EXPIRES_IN) {
-    const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+  const accessToken = createAccessToken(newUser.id);
 
-    const cookieOptions = {
-      expires: new Date(Date.now() + Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000),
-      httpOnly: true,
-      secure: false,
-    };
-
-    if (process.env.NODE_ENV === 'production') {
-      cookieOptions.secure = true;
-    }
-
-    response.cookie('jwt', token, cookieOptions);
-
-    return response.status(201).json({
-      status: 'Success',
-      token,
-      data: newUser,
-    });
-  }
-};
+  return response.status(201).json({
+    status: 'Success',
+    accessToken,
+    data: {
+      id: newUser.id,
+      email,
+      password,
+      firstName,
+      lastName,
+    },
+  });
+});
