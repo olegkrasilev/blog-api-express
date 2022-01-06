@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 
 import { tryCatch } from '../utils/tryCatch';
 
+import { config } from '@src/config/config';
 import { User } from '@src/models/entities/User';
 import { IsUserChangedPassword, DecodedToken, Token } from '@src/types/index';
 
@@ -10,7 +11,8 @@ export const isAuth = tryCatch(async (request: Request, response: Response, next
   // Check the token
   let token: Token;
   let isUserChangedPassword: IsUserChangedPassword;
-  let decodedToken: DecodedToken;
+
+  const { jwtSecret } = config.jwt;
 
   if (request.headers.authorization?.startsWith('Bearer')) {
     token = request.headers.authorization.split(' ')[1];
@@ -24,11 +26,7 @@ export const isAuth = tryCatch(async (request: Request, response: Response, next
   }
 
   // Verification token
-
-  if (process.env.JWT_SECRET) {
-    // TODO handle jwt error
-    decodedToken = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload;
-  }
+  const decodedToken: DecodedToken = jwt.verify(token, jwtSecret) as JwtPayload;
 
   const decodedId = [decodedToken?.id];
 
