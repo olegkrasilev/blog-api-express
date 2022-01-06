@@ -47,7 +47,7 @@ const validationChain = [
 
 router.route('/getAllUsers').get(isAuth, getAllUsers);
 router.route('/resetPassword/:token').patch(validationChain, resetPassword);
-router.route('/:id').get(getUser);
+router.route('/:id').get(isAuth, getUser);
 router.route('/signup').post(validationChain, signup);
 router.route('/login').post(validationChain, login);
 router.route('/forgotPassword').post(validateEmail, forgotPassword);

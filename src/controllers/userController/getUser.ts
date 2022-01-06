@@ -1,26 +1,24 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
+import { RequestUser } from '@src/types/index';
+
+import { AppError } from '@src/utils/appError';
 import { tryCatch } from '@src/utils/tryCatch';
-
 import { User } from '@src/models/entities/User';
 
-export const getUser = tryCatch(async (request: Request, response: Response) => {
-  const userId = request.params;
+export const getUser = tryCatch(async (request: RequestUser, response: Response, next: NextFunction) => {
+  const { id } = request.params;
 
-  const isUserExists = await User.findOne(userId);
+  const user = await User.findOne(id);
 
-  // TODO duplicated code
-  if (!isUserExists) {
-    return response.status(400).json({
-      status: 'fail',
-      data: 'Current User dont exists',
-    });
+  if (!user) {
+    return next(new AppError('Current User dont exists', 404));
   }
 
-  const userEmail = isUserExists?.email;
+  const { email, firstName, lastName } = user;
 
   return response.status(200).json({
     status: 'Success',
-    data: userEmail,
+    data: { id, email, firstName, lastName },
   });
 });
