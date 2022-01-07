@@ -5,12 +5,13 @@ import { tryCatch } from '../utils/tryCatch';
 
 import { config } from '@src/config/config';
 import { User } from '@src/models/entities/User';
-import { IsUserChangedPassword, DecodedToken, Token } from '@src/types/index';
+import { IsUserChangedPassword, DecodedToken, Token, ChangedTimeStamp } from '@src/types/index';
 
 export const isAuth = tryCatch(async (request: Request, response: Response, next: NextFunction) => {
   // Check the token
   let token: Token;
   let isUserChangedPassword: IsUserChangedPassword;
+  let changedTimeStamp: ChangedTimeStamp;
 
   const { jwtSecret } = config.jwt;
 
@@ -44,8 +45,6 @@ export const isAuth = tryCatch(async (request: Request, response: Response, next
   const JWTTimeStamp = decodedToken?.iat;
 
   const passwordChangedAt = isUserExists[0].passwordChangedAt;
-  // TODO Move to type file
-  let changedTimeStamp: number | undefined;
 
   if (passwordChangedAt) {
     changedTimeStamp = Number.parseInt((passwordChangedAt.getTime() / 1000).toString(), 10);

@@ -24,3 +24,5 @@ export type MailOptions = {
   subject: string;
   text: string;
 };
+
+export type ChangedTimeStamp = number | undefined;

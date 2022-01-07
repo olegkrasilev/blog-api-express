@@ -49,6 +49,7 @@ export const resetPassword = tryCatch(async (request: Request, response: Respons
     user.passwordResetToken = '';
     await entityManager.save(user);
   }
+  // TODO add else condition passwordResetExpires < now
 
   // 4) Log the user in, send the JWT
   const token = createAccessToken(id);
