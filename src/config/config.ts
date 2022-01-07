@@ -12,8 +12,10 @@ export const config = {
     port: process.env.DBPORT || 'port',
   },
   jwt: {
-    jwtSecret: process.env.JWT_SECRET || 'secret',
-    jwtExpiresIn: process.env.JWT_EXPIRES_IN || 'expires',
+    jwtAccessSecret: process.env.JWT_ACCESS_SECRET || 'secret',
+    jwtAccessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN || 'expires',
+    jwtRefreshSecret: process.env.JWT_REFRESH_SECRET || 'secret',
+    jwtRefreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || 'expires',
     jwtCookieExpiresIn: process.env.JWT_COOKIE_EXPIRES_IN || 'expires',
   },
   mailTrap: {

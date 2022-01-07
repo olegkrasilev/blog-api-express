@@ -4,7 +4,7 @@ import { Response } from 'express';
 
 import { config } from '@src/config/config';
 
-const { jwtSecret, jwtExpiresIn } = config.jwt;
+const { jwtAccessSecret, jwtAccessExpiresIn, jwtRefreshSecret, jwtRefreshExpiresIn } = config.jwt;
 
 const cookieOptions = {
   expires: new Date(Date.now() + Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000),
@@ -17,9 +17,17 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 export const createAccessToken = (id: number, response?: Response) => {
-  const token = jwt.sign({ id }, jwtSecret, { expiresIn: jwtExpiresIn });
+  const accessToken = jwt.sign({ id }, jwtAccessSecret, { expiresIn: jwtAccessExpiresIn });
 
-  response?.cookie('jwt', token, cookieOptions);
+  response?.cookie('jwt', accessToken, cookieOptions);
 
-  return token;
+  return accessToken;
+};
+
+export const createRefreshToken = (id: number, response?: Response) => {
+  const refreshToken = jwt.sign({ id }, jwtRefreshSecret, { expiresIn: jwtRefreshExpiresIn });
+
+  response?.cookie('jwt', refreshToken, cookieOptions);
+
+  return refreshToken;
 };

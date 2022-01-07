@@ -13,7 +13,7 @@ export const isAuth = tryCatch(async (request: Request, response: Response, next
   let isUserChangedPassword: IsUserChangedPassword;
   let changedTimeStamp: ChangedTimeStamp;
 
-  const { jwtSecret } = config.jwt;
+  const { jwtAccessSecret } = config.jwt;
 
   if (request.headers.authorization?.startsWith('Bearer')) {
     token = request.headers.authorization.split(' ')[1];
@@ -27,7 +27,7 @@ export const isAuth = tryCatch(async (request: Request, response: Response, next
   }
 
   // Verification token
-  const decodedToken: DecodedToken = jwt.verify(token, jwtSecret) as JwtPayload;
+  const decodedToken: DecodedToken = jwt.verify(token, jwtAccessSecret) as JwtPayload;
 
   const decodedId = [decodedToken?.id];
 
