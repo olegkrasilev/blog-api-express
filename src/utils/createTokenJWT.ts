@@ -16,10 +16,10 @@ if (process.env.NODE_ENV === 'production') {
   cookieOptions.secure = true;
 }
 
-export const createAccessToken = (id: number, response?: Response) => {
+export const createAccessToken = (id: number, response: Response) => {
   const accessToken = jwt.sign({ id }, jwtAccessSecret, { expiresIn: jwtAccessExpiresIn });
 
-  response?.cookie('jwt', accessToken, cookieOptions);
+  response.cookie('jwt', accessToken, cookieOptions);
 
   return accessToken;
 };

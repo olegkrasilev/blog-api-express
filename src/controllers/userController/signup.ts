@@ -48,7 +48,7 @@ export const signup = tryCatch(async (request: RequestUser, response: Response, 
 
   await newUser.save();
 
-  const accessToken = createAccessToken(newUser.id);
+  const accessToken = createAccessToken(newUser.id, response);
 
   return response.status(201).json({
     status: 'Success',

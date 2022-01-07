@@ -52,7 +52,7 @@ export const resetPassword = tryCatch(async (request: Request, response: Respons
   // TODO add else condition passwordResetExpires < now
 
   // 4) Log the user in, send the JWT
-  const token = createAccessToken(id);
+  const token = createAccessToken(id, response);
 
   return response.status(200).json({
     status: 'Success',

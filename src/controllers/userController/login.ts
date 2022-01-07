@@ -44,7 +44,7 @@ export const login = tryCatch(async (request: RequestUser, response: Response, n
   }
 
   // 4) Send jwt to client
-  const token = createAccessToken(id);
+  const token = createAccessToken(id, response);
 
   return response.status(200).json({
     status: 'Success',

@@ -35,7 +35,7 @@ export const updatePassword = tryCatch(async (request: RequestUser, response: Re
   await entityManager.save(user);
 
   // 4) Log the user in, send JWT
-  const token = createAccessToken(id);
+  const token = createAccessToken(id, response);
 
   return response.status(200).json({
     status: 'Success',

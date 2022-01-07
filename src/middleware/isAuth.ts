@@ -19,6 +19,10 @@ export const isAuth = tryCatch(async (request: Request, response: Response, next
     token = request.headers.authorization.split(' ')[1];
   }
 
+  if (request.cookies.jwt) {
+    token = request.cookies.jwt;
+  }
+
   if (!token) {
     return response.status(401).json({
       status: 'fail',
