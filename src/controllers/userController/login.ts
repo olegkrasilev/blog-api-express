@@ -2,7 +2,7 @@ import { Response, NextFunction } from 'express';
 import bcrypt from 'bcrypt';
 import { validationResult } from 'express-validator';
 
-import { createAccessToken } from '@src/utils/createTokenJWT';
+import { createRefreshAccessToken } from '@src/utils/createTokenJWT';
 import { tryCatch } from '@src/utils/tryCatch';
 import { AppError } from '@src/utils/appError';
 import { RequestUser } from '@src/types/index';
@@ -44,7 +44,7 @@ export const login = tryCatch(async (request: RequestUser, response: Response, n
   }
 
   // 4) Send jwt to client
-  const token = createAccessToken(id, response);
+  const token = createRefreshAccessToken(id, response);
 
   return response.status(200).json({
     status: 'Success',

@@ -5,7 +5,7 @@ import { getManager } from 'typeorm';
 import bcrypt from 'bcrypt';
 import { validationResult } from 'express-validator';
 
-import { createAccessToken } from '@src/utils/createTokenJWT';
+import { createRefreshAccessToken } from '@src/utils/createTokenJWT';
 import { tryCatch } from '@src/utils/tryCatch';
 import { AppError } from '@src/utils/appError';
 import { User } from '@src/models/entities/User';
@@ -52,7 +52,7 @@ export const resetPassword = tryCatch(async (request: Request, response: Respons
   // TODO add else condition passwordResetExpires < now
 
   // 4) Log the user in, send the JWT
-  const token = createAccessToken(id, response);
+  const token = createRefreshAccessToken(id, response);
 
   return response.status(200).json({
     status: 'Success',

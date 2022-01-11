@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import { NextFunction, Response } from 'express';
 import { validationResult } from 'express-validator';
 
-import { createAccessToken } from '../../utils/createTokenJWT';
+import { createRefreshAccessToken } from '../../utils/createTokenJWT';
 
 import { AppError } from '@src/utils/appError';
 import { tryCatch } from '@src/utils/tryCatch';
@@ -48,7 +48,7 @@ export const signup = tryCatch(async (request: RequestUser, response: Response, 
 
   await newUser.save();
 
-  const accessToken = createAccessToken(newUser.id, response);
+  const accessToken = createRefreshAccessToken(newUser.id, response);
 
   return response.status(201).json({
     status: 'Success',

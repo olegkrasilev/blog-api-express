@@ -16,13 +16,9 @@ export type Token = string | undefined;
 
 export type DecodedToken = JwtPayload | undefined;
 
-export type IsUserChangedPassword = boolean | undefined;
-
 export type MailOptions = {
   from: string;
   to: string;
   subject: string;
   text: string;
 };
-
-export type ChangedTimeStamp = number | undefined;

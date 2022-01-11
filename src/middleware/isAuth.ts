@@ -1,69 +1,58 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 
-import { tryCatch } from '../utils/tryCatch';
-
+import { tryCatch } from '@src/utils/tryCatch';
+import { AppError } from '@src/utils/appError';
 import { config } from '@src/config/config';
-import { User } from '@src/models/entities/User';
-import { IsUserChangedPassword, DecodedToken, Token, ChangedTimeStamp } from '@src/types/index';
+import { DecodedToken, Token } from '@src/types/index';
+import { createNewAccessToken } from '@src/utils/createTokenJWT';
 
 export const isAuth = tryCatch(async (request: Request, response: Response, next: NextFunction) => {
   // Check the token
-  let token: Token;
-  let isUserChangedPassword: IsUserChangedPassword;
-  let changedTimeStamp: ChangedTimeStamp;
+  let accessToken: Token;
+  let refreshToken: Token;
+  let decodedAccessToken: DecodedToken;
+  let decodedRefreshToken: DecodedToken;
 
-  const { jwtAccessSecret } = config.jwt;
+  const { jwtAccessSecret, jwtRefreshSecret } = config.jwt;
 
   if (request.headers.authorization?.startsWith('Bearer')) {
-    token = request.headers.authorization.split(' ')[1];
+    accessToken = request.headers.authorization.split(' ')[1];
   }
 
-  if (request.cookies.jwt) {
-    token = request.cookies.jwt;
+  if (request.cookies.jwtAccessToken && request.cookies.jwtRefreshToken) {
+    accessToken = request.cookies.jwtAccessToken;
+    refreshToken = request.cookies.jwtRefreshToken;
+    console.log(accessToken, '1');
   }
 
-  if (!token) {
-    return response.status(401).json({
-      status: 'fail',
-      data: 'You are not logged in! Please log in to get access!',
-    });
+  if (!(accessToken && refreshToken)) {
+    return next(new AppError('You are not logged in! Please log in to get access!', 401));
   }
 
   // Verification token
-  const decodedToken: DecodedToken = jwt.verify(token, jwtAccessSecret) as JwtPayload;
+  try {
+    decodedAccessToken = jwt.verify(accessToken, jwtAccessSecret) as JwtPayload;
 
-  const decodedId = [decodedToken?.id];
-
-  // Check if user still exists
-  const isUserExists = await User.findByIds(decodedId);
-
-  if (isUserExists.length === 0) {
-    return response.status(401).json({
-      status: 'fail',
-      message: 'The user belonging to this token does not longer exist',
-    });
+    return next();
+  } catch (error) {
+    console.error(error);
   }
 
-  // Check if user changed password after the JWT was issued
-  const JWTTimeStamp = decodedToken?.iat;
-
-  const passwordChangedAt = isUserExists[0].passwordChangedAt;
-
-  if (passwordChangedAt) {
-    changedTimeStamp = Number.parseInt((passwordChangedAt.getTime() / 1000).toString(), 10);
+  if (!decodedAccessToken) {
+    try {
+      decodedRefreshToken = jwt.verify(refreshToken, jwtRefreshSecret) as JwtPayload;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  if (JWTTimeStamp && changedTimeStamp) {
-    isUserChangedPassword = JWTTimeStamp < changedTimeStamp;
+  if (!decodedRefreshToken) {
+    return next(new AppError('You are not logged in! Please log in to get access!', 401));
   }
 
-  if (isUserChangedPassword) {
-    return response.status(401).json({
-      status: 'fail',
-      message: 'User recently changed the password',
-    });
-  }
+  accessToken = createNewAccessToken(Number(decodedRefreshToken.id), response);
+  console.log(accessToken);
 
   return next();
 });

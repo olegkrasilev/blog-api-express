@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import { NextFunction, Response } from 'express';
 import { getManager } from 'typeorm';
 
-import { createAccessToken } from '@src/utils/createTokenJWT';
+import { createRefreshAccessToken } from '@src/utils/createTokenJWT';
 import { AppError } from '@src/utils/appError';
 import { tryCatch } from '@src/utils/tryCatch';
 import { User } from '@src/models/entities/User';
@@ -35,7 +35,7 @@ export const updatePassword = tryCatch(async (request: RequestUser, response: Re
   await entityManager.save(user);
 
   // 4) Log the user in, send JWT
-  const token = createAccessToken(id, response);
+  const token = createRefreshAccessToken(id, response);
 
   return response.status(200).json({
     status: 'Success',
