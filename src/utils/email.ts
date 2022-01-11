@@ -1,15 +1,18 @@
 import nodemailer from 'nodemailer';
 
-import { MailOptions } from '../types/index';
+import { MailOptions } from '@src/types/index';
+import { config } from '@src/config/config';
+
+const { host, port, password, username } = config.mailTrap;
 
 export const sendEmail = async (options: { email: string; subject: string; message: string }) => {
   // 1) Create a transporter
   const transporter = nodemailer.createTransport({
-    host: process.env.MT_HOST,
-    port: Number(process.env.MT_PORT),
+    host,
+    port: Number(port),
     auth: {
-      user: process.env.MT_USERNAME,
-      pass: process.env.MT_PASSWORD,
+      user: username,
+      pass: password,
     },
   });
 
