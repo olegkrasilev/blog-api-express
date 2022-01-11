@@ -1,7 +1,6 @@
 import express from 'express';
 
-import { logout } from '../controllers/userController/logout';
-
+import { logout } from '@src/controllers/userController/logout';
 import {
   validateFirstLastNameEmail,
   validatePassword,
@@ -10,7 +9,6 @@ import {
   validationChain,
   validatePasswordAndNewPassword,
 } from '@src/routes/validateRoutes';
-
 import { isAuth } from '@src/middleware/isAuth';
 import { updateUser } from '@src/controllers/userController/updateUser';
 import { forgotPassword } from '@src/controllers/userController/forgotPassword';

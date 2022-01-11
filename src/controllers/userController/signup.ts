@@ -2,8 +2,7 @@ import bcrypt from 'bcrypt';
 import { NextFunction, Response } from 'express';
 import { validationResult } from 'express-validator';
 
-import { createRefreshAccessToken } from '../../utils/createTokenJWT';
-
+import { createRefreshAccessToken } from '@src/utils/createTokenJWT';
 import { AppError } from '@src/utils/appError';
 import { tryCatch } from '@src/utils/tryCatch';
 import { User } from '@src/models/entities/User';
