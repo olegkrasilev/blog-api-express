@@ -8,12 +8,11 @@ import { tryCatch } from '@src/utils/tryCatch';
 import { User } from '@src/models/entities/User';
 
 export const updateUser = tryCatch(async (request: RequestUser, response: Response, next: NextFunction) => {
-  // 1) Create error if user POSTS password data
   const entityManager = getManager();
   const { id, email, lastName, firstName } = request.body;
 
   if (!(id && email && lastName && firstName)) {
-    return next(new AppError('Please provide id,email, firstname and lastname', 400));
+    return next(new AppError('Please provide id,email, firstName and lastName', 400));
   }
 
   // Validate request for errors with Express-validator
