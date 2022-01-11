@@ -1,5 +1,7 @@
 import express from 'express';
 
+import { logout } from '../controllers/userController/logout';
+
 import {
   validateFirstLastNameEmail,
   validatePassword,
@@ -31,3 +33,4 @@ router.route('/forgotPassword').post(validateEmail, forgotPassword);
 router.route('/updatePassword').patch(isAuth, validatePasswordAndNewPassword, updatePassword);
 router.route('/updateUser').patch(isAuth, validateFirstLastNameEmail, updateUser);
 router.route('/deleteUser').delete(isAuth, deleteUser);
+router.route('/logout').post(isAuth, logout);
