@@ -8,7 +8,7 @@ import {
   validateEmail,
   validationChain,
   validatePasswordAndNewPassword,
-} from '@src/routes/validateRoutes';
+} from '@src/routes/validateUserRoutes';
 import { isAuth } from '@src/middleware/isAuth';
 import { updateUser } from '@src/controllers/userController/updateUser';
 import { forgotPassword } from '@src/controllers/userController/forgotPassword';
