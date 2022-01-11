@@ -1,16 +1,14 @@
 import { Response, NextFunction } from 'express';
-
 import { validationResult } from 'express-validator';
 
 import { RequestUser } from '@src/types/index';
 import { tryCatch } from '@src/utils/tryCatch';
 import { AppError } from '@src/utils/appError';
-import { User } from '@src/models/entities/User';
 import { Posts } from '@src/models/entities/Post';
 
-export const createPost = tryCatch(async (request: RequestUser, response: Response, next: NextFunction) => {
+export const updatePost = tryCatch(async (request: RequestUser, response: Response, next: NextFunction) => {
   const { id, post, title } = request.body;
-  const userId = id;
+  const postId = id;
 
   if (!(id && post && title)) {
     return next(new AppError('Post and title fields should be not empty!', 400));
@@ -26,19 +24,16 @@ export const createPost = tryCatch(async (request: RequestUser, response: Respon
     });
   }
 
-  const user = await User.findOne(userId);
+  const existingPost = await Posts.findOne(postId);
 
-  if (!user) {
-    return next(new AppError('This user does not exist.', 404));
+  if (!existingPost) {
+    return next(new AppError('This post does not exist.', 404));
   }
 
-  const newPost = Posts.create({
-    user,
-    title,
-    post,
-  });
+  existingPost.post = post;
+  existingPost.title = title;
 
-  await newPost.save();
+  await existingPost.save();
 
   return response.json({
     status: 'success',
