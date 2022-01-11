@@ -1,5 +1,6 @@
 import { createConnection } from 'typeorm';
 
+import { Posts } from '@src/models/entities/Post';
 import { User } from '@src/models/entities/User';
 import { config } from '@src/config/config';
 
@@ -13,7 +14,7 @@ export const connectDB = async () =>
     username,
     password,
     database,
-    entities: [User],
+    entities: [User, Posts],
     synchronize: true,
   })
     .then(result => {

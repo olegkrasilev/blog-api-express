@@ -10,6 +10,7 @@ import { errorHandler } from './controllers/errorController/errorController';
 
 import { AppError } from '@src/utils/appError';
 import { router as userRouter } from '@src/routes/userRouter';
+import { router as postRouter } from '@src/routes/postsRouter';
 
 export const app = express();
 
@@ -29,6 +30,7 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/posts', postRouter);
 
 app.all('*', (request, response, next) => {
   next(new AppError(`Can't find ${request.url} on this website`, 404));

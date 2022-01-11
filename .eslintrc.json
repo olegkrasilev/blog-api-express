@@ -63,7 +63,8 @@
         "groups": ["builtin", "external", "index", "sibling", "parent", "internal"]
       }
     ],
-    "import/order": ["error", { "newlines-between": "always-and-inside-groups" }]
+    "import/order": ["error", { "newlines-between": "always-and-inside-groups" }],
+    "import/no-cycle": "off"
   },
   "settings": {
     "import/resolver": {

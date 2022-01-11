@@ -9,6 +9,8 @@ export interface RequestUser extends Request {
     newPassword: string | undefined;
     firstName: string | undefined;
     lastName: string | undefined;
+    post: string | undefined;
+    title: string | undefined;
   };
 }
 

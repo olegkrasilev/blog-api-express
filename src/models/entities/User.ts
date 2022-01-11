@@ -1,4 +1,6 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+
+import { Posts } from '@src/models/entities/Post';
 
 @Entity('user')
 export class User extends BaseEntity {
@@ -27,4 +29,7 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true })
   passwordResetExpires: Date;
+
+  @OneToMany(() => Posts, (posts: Posts) => posts.user, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  posts: Posts[];
 }
