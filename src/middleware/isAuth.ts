@@ -23,7 +23,6 @@ export const isAuth = tryCatch(async (request: Request, response: Response, next
   if (request.cookies.jwtAccessToken && request.cookies.jwtRefreshToken) {
     accessToken = request.cookies.jwtAccessToken;
     refreshToken = request.cookies.jwtRefreshToken;
-    console.log(accessToken, '1');
   }
 
   if (!(accessToken && refreshToken)) {
@@ -52,7 +51,6 @@ export const isAuth = tryCatch(async (request: Request, response: Response, next
   }
 
   accessToken = createNewAccessToken(Number(decodedRefreshToken.id), response);
-  console.log(accessToken);
 
   return next();
 });
