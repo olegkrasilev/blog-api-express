@@ -1,7 +1,6 @@
 import { NextFunction, Response } from 'express';
 
 import { RequestUser } from '@src/types/index';
-
 import { AppError } from '@src/utils/appError';
 import { tryCatch } from '@src/utils/tryCatch';
 import { Posts } from '@src/models/entities/Post';

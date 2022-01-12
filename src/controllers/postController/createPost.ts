@@ -1,5 +1,4 @@
 import { Response, NextFunction } from 'express';
-
 import { validationResult } from 'express-validator';
 
 import { RequestUser } from '@src/types/index';
