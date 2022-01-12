@@ -3,14 +3,13 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
-
 import cookieParser from 'cookie-parser';
 
-import { errorHandler } from './controllers/errorController/errorController';
-
+import { errorHandler } from '@src/controllers/errorController/errorController';
 import { AppError } from '@src/utils/appError';
 import { router as userRouter } from '@src/routes/userRouter';
 import { router as postRouter } from '@src/routes/postsRouter';
+import { router as commentRouter } from '@src/routes/commentRouter';
 
 export const app = express();
 
@@ -31,6 +30,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/posts', postRouter);
+app.use('/api/v1/comments', commentRouter);
 
 app.all('*', (request, response, next) => {
   next(new AppError(`Can't find ${request.url} on this website`, 404));

@@ -11,6 +11,9 @@ export interface RequestUser extends Request {
     lastName: string | undefined;
     post: string | undefined;
     title: string | undefined;
+    comment: string | undefined;
+    userID: number | undefined;
+    postID: number | undefined;
   };
 }
 
