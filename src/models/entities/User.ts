@@ -1,5 +1,6 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
+import { Comments } from '@src/models/entities/Comment';
 import { Posts } from '@src/models/entities/Post';
 
 @Entity('user')
@@ -32,4 +33,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Posts, (posts: Posts) => posts.user, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   posts: Posts[];
+
+  @OneToMany(() => Comments, (comments: Comments) => comments.user, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  comments: Comments[];
 }
