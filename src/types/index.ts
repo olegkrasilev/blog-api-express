@@ -14,6 +14,7 @@ export interface RequestUser extends Request {
     comment: string | undefined;
     userID: number | undefined;
     postID: number | undefined;
+    commentID: number | undefined;
   };
 }
 
