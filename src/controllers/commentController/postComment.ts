@@ -28,7 +28,7 @@ export const postComment = tryCatch(async (request: RequestUser, response: Respo
   const user = await User.findOne(userID);
   const post = await Posts.findOne(postID);
 
-  if (!user && post) {
+  if (!(user && post)) {
     return next(new AppError('This user or post does not exist.', 404));
   }
 
