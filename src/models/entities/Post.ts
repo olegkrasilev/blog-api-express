@@ -26,7 +26,7 @@ export class Posts extends BaseEntity {
   @CreateDateColumn()
   postCreationTime: Date;
 
-  @ManyToOne(() => User, (user: User) => user.posts)
+  @ManyToOne(() => User, (user: User) => user.posts, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
