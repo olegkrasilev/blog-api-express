@@ -10,7 +10,7 @@ export const getAllPosts = tryCatch(async (request: Request, response: Response,
   });
 
   if (allPosts.length === 0) {
-    return next(new AppError('No users exist', 400));
+    return next(new AppError('No posts exist', 400));
   }
 
   const allPostsData = allPosts.map(posts => {
