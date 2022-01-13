@@ -64,7 +64,8 @@
       }
     ],
     "import/order": ["error", { "newlines-between": "always-and-inside-groups" }],
-    "import/no-cycle": "off"
+    "import/no-cycle": "off",
+    "unicorn/no-null": "off"
   },
   "settings": {
     "import/resolver": {
