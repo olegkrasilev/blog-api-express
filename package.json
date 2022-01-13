@@ -9,7 +9,10 @@
     "build": "tsc -p tsconfig.prod.json",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "create-migration": "typeorm migration:create -n User-Post-Comments",
+    "generate-migration": "ts-node --transpile-only ./node_modules/typeorm/cli.js migration:generate -n User-Post-Comments",
+    "run-migration": "ts-node --transpile-only ./node_modules/typeorm/cli.js migration:run"
   },
   "repository": {
     "type": "git",

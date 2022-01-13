@@ -9,8 +9,9 @@ import {
   OneToMany,
 } from 'typeorm';
 
-import { Comments } from '@src/models/entities/Comment';
-import { User } from '@src/models/entities/User';
+import { User } from './User';
+
+import { Comments } from './Comment';
 
 @Entity('posts')
 export class Posts extends BaseEntity {
