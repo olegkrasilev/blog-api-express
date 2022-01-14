@@ -1,6 +1,8 @@
 import { Response, NextFunction } from 'express';
 import { getManager } from 'typeorm';
 
+import { findComment } from '@src/utils/findComment';
+
 import { RequestUser } from '@src/types/index';
 import { tryCatch } from '@src/utils/tryCatch';
 import { AppError } from '@src/utils/appError';
@@ -17,17 +19,7 @@ export const updateComment = tryCatch(async (request: RequestUser, response: Res
 
   validateRequest(request, response);
 
-  const existingComment = await Comments.findOne(commentID, {
-    relations: ['user', 'post'],
-    where: {
-      user: {
-        id: userID,
-      },
-      post: {
-        id: postID,
-      },
-    },
-  });
+  const existingComment = await findComment(userID, postID, commentID);
 
   if (!existingComment) {
     return next(new AppError('This user or post or comment does not exist.', 404));

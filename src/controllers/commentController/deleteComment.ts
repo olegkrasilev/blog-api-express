@@ -1,10 +1,10 @@
 import { Response, NextFunction } from 'express';
 
+import { findComment } from '@src/utils/findComment';
+
 import { RequestUser } from '@src/types/index';
 import { tryCatch } from '@src/utils/tryCatch';
 import { AppError } from '@src/utils/appError';
-import { User } from '@src/models/entities/User';
-import { Posts } from '@src/models/entities/Post';
 import { Comments } from '@src/models/entities/Comment';
 
 export const deleteComment = tryCatch(async (request: RequestUser, response: Response, next: NextFunction) => {
@@ -14,11 +14,9 @@ export const deleteComment = tryCatch(async (request: RequestUser, response: Res
     return next(new AppError('Comment field should be not empty!', 400));
   }
 
-  const user = await User.findOne(userID);
-  const post = await Posts.findOne(postID);
-  const existingComment = await Comments.findOne(commentID);
+  const existingComment = await findComment(userID, postID, commentID);
 
-  if (!(user && post && existingComment)) {
+  if (!existingComment) {
     return next(new AppError('This user or post or comment does not exist.', 404));
   }
 
