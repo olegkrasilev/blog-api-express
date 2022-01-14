@@ -30,7 +30,7 @@ export const forgotPassword = tryCatch(async (request: RequestUser, response: Re
   const tenMinutes = 10 * 60_000;
   const passwordResetExpires = new Date(now.getTime() + tenMinutes);
 
-  await User.merge(user, { passwordResetExpires, passwordResetToken });
+  await User.merge(user, { passwordResetExpires, passwordResetToken }).save();
 
   // 3) Send it to user as email
 
