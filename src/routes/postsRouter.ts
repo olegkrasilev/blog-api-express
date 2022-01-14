@@ -1,12 +1,12 @@
 import express from 'express';
 
-import { getUserPosts } from '@src/controllers/postController/getUserPosts';
-import { getAllPosts } from '@src/controllers/postController/getAllPosts';
-import { updatePost } from '@src/controllers/postController/updatePost';
+import { getUserPosts } from '@src/services/post/getUserPosts';
+import { getAllPosts } from '@src/services/post/getAllPosts';
+import { updatePost } from '@src/services/post/updatePost';
 import { validatePostAndTitle } from '@src/routes/validatePostsRoutes';
 import { isAuth } from '@src/middleware/isAuth';
-import { createPost } from '@src/controllers/postController/createPost';
-import { deletePost } from '@src/controllers/postController/deletePost';
+import { createPost } from '@src/services/post/createPost';
+import { deletePost } from '@src/services/post/deletePost';
 
 export const router = express.Router();
 

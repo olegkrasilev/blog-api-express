@@ -5,7 +5,7 @@ import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 
-import { errorHandler } from '@src/controllers/errorController/errorController';
+import { errorHandler } from '@src/services/error/errorController';
 import { AppError } from '@src/utils/appError';
 import { router as userRouter } from '@src/routes/userRouter';
 import { router as postRouter } from '@src/routes/postsRouter';

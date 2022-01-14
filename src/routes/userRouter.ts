@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { logout } from '@src/controllers/userController/logout';
+import { logout } from '@src/services/user/logout';
 import {
   validateFirstLastNameEmail,
   validatePassword,
@@ -10,15 +10,15 @@ import {
   validatePasswordAndNewPassword,
 } from '@src/routes/validateUserRoutes';
 import { isAuth } from '@src/middleware/isAuth';
-import { updateUser } from '@src/controllers/userController/updateUser';
-import { forgotPassword } from '@src/controllers/userController/forgotPassword';
-import { getAllUsers } from '@src/controllers/userController/getAllUsers';
-import { getUser } from '@src/controllers/userController/getUser';
-import { login } from '@src/controllers/userController/login';
-import { resetPassword } from '@src/controllers/userController/resetPassword';
-import { signup } from '@src/controllers/userController/signup';
-import { updatePassword } from '@src/controllers/userController/updatePassword';
-import { deleteUser } from '@src/controllers/userController/deleteUser';
+import { updateUser } from '@src/services/user/updateUser';
+import { forgotPassword } from '@src/services/user/forgotPassword';
+import { getAllUsers } from '@src/services/user/getAllUsers';
+import { getUser } from '@src/services/user/getUser';
+import { login } from '@src/services/user/login';
+import { resetPassword } from '@src/services/user/resetPassword';
+import { signup } from '@src/services/user/signup';
+import { updatePassword } from '@src/services/user/updatePassword';
+import { deleteUser } from '@src/services/user/deleteUser';
 
 export const router = express.Router();
 

@@ -1,10 +1,10 @@
 import express from 'express';
 
 import { validateComment } from '@src/routes/validateCommentRoute';
-import { postComment } from '@src/controllers/commentController/postComment';
+import { postComment } from '@src/services/comment/postComment';
 import { isAuth } from '@src/middleware/isAuth';
-import { updateComment } from '@src/controllers/commentController/updateComment';
-import { deleteComment } from '@src/controllers/commentController/deleteComment';
+import { updateComment } from '@src/services/comment/updateComment';
+import { deleteComment } from '@src/services/comment/deleteComment';
 
 export const router = express.Router();
 
