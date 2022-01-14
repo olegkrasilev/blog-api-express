@@ -1,31 +1,21 @@
 import crypto from 'crypto';
 
 import { Response, NextFunction } from 'express';
-import { getManager } from 'typeorm';
-import { validationResult } from 'express-validator';
 
 import { AppError } from '@src/utils/appError';
 import { tryCatch } from '@src/utils/tryCatch';
 import { RequestUser } from '@src/types/index';
 import { User } from '@src/models/entities/User';
 import { sendEmail } from '@src/utils/email';
+import { validateRequest } from '@src/utils/express-validator';
 
 export const forgotPassword = tryCatch(async (request: RequestUser, response: Response, next: NextFunction) => {
-  const entityManager = getManager();
   const { email } = request.body;
 
-  // Validate request for errors with Express-validator
-  const errors = validationResult(request);
-
-  if (!errors.isEmpty()) {
-    return response.status(400).json({
-      status: 'fail',
-      errors: errors.array(),
-    });
-  }
+  validateRequest(request, response);
 
   // 1) Get user based on Posted email
-  const user = await entityManager.findOne(User, { email });
+  const user = await User.findOne({ email });
 
   if (!user) {
     return next(new AppError('There is no user', 404));
@@ -40,10 +30,7 @@ export const forgotPassword = tryCatch(async (request: RequestUser, response: Re
   const tenMinutes = 10 * 60_000;
   const passwordResetExpires = new Date(now.getTime() + tenMinutes);
 
-  user.passwordResetExpires = passwordResetExpires;
-  user.passwordResetToken = passwordResetToken;
-
-  await entityManager.save(user);
+  await User.merge(user, { passwordResetExpires, passwordResetToken });
 
   // 3) Send it to user as email
 
@@ -64,9 +51,7 @@ export const forgotPassword = tryCatch(async (request: RequestUser, response: Re
       message: 'Token sent to email',
     });
   } catch {
-    user.passwordResetToken = '';
-    user.passwordResetExpires = '' as unknown as Date;
-    await entityManager.save(user);
+    await User.merge(user, { passwordResetExpires: '', passwordResetToken: '' }).save();
 
     return next(new AppError('There was an error sending the email, Try again later', 500));
   }
