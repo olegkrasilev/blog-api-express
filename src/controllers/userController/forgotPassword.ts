@@ -37,7 +37,7 @@ export const forgotPassword = tryCatch(async (request: RequestUser, response: Re
   const resetURL = `${request.protocol}://${request.get('host')}/api/v1/users/resetPassword/${resetToken}`;
 
   const message = `Forgot your password? Submit a PATCH request with your new password to: \n${resetURL}\n
-  \n If you did not forget your password, please ingore this email`;
+  \n If you did not forget your password, please ignore this email`;
 
   try {
     await sendEmail({
