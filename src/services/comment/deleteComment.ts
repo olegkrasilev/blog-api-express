@@ -1,7 +1,6 @@
 import { Response, NextFunction } from 'express';
 
 import { findComment } from '@src/utils/findComment';
-
 import { RequestUser } from '@src/types/index';
 import { tryCatch } from '@src/utils/tryCatch';
 import { AppError } from '@src/utils/appError';
