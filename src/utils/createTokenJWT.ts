@@ -37,7 +37,7 @@ export const createRefreshAccessToken = (id: number, response: Response) => {
   response.cookie('jwtAccessToken', accessToken, cookieAccessOptions);
   response.cookie('jwtRefreshToken', refreshToken, cookieRefreshOptions);
 
-  return refreshToken;
+  return { refreshToken, accessToken };
 };
 
 export const createNewAccessToken = (id: number, response: Response) => {

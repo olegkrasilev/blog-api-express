@@ -1,12 +1,12 @@
 import { Response, NextFunction } from 'express';
 import bcrypt from 'bcrypt';
-import { validationResult } from 'express-validator';
 
 import { createRefreshAccessToken } from '@src/utils/createTokenJWT';
 import { tryCatch } from '@src/utils/tryCatch';
 import { AppError } from '@src/utils/appError';
 import { RequestUser } from '@src/types/index';
 import { User } from '@src/models/entities/User';
+import { validateRequest } from '@src/utils/express-validator';
 
 export const login = tryCatch(async (request: RequestUser, response: Response, next: NextFunction) => {
   const { email, password } = request.body;
@@ -15,16 +15,7 @@ export const login = tryCatch(async (request: RequestUser, response: Response, n
     return next(new AppError('Please provide email and password', 400));
   }
 
-  // Validate request for errors with Express-validator
-  // 1) Check if email and password exist
-  const errors = validationResult(request);
-
-  if (!errors.isEmpty()) {
-    return response.status(400).json({
-      status: 'fail',
-      errors: errors.array(),
-    });
-  }
+  validateRequest(request, response);
 
   // 2) Check if the user exist
   const isUserExists = await User.findOne({ email });
@@ -33,8 +24,7 @@ export const login = tryCatch(async (request: RequestUser, response: Response, n
     return next(new AppError('This user does not exist', 404));
   }
 
-  const { encryptedPassword } = isUserExists;
-  const { id } = isUserExists;
+  const { encryptedPassword, id } = isUserExists;
 
   // 3) Check if user exist && password is correct
   const isPasswordCorrect = await bcrypt.compare(password, encryptedPassword);
@@ -44,10 +34,11 @@ export const login = tryCatch(async (request: RequestUser, response: Response, n
   }
 
   // 4) Send jwt to client
-  const token = createRefreshAccessToken(id, response);
+  const { accessToken, refreshToken } = createRefreshAccessToken(id, response);
 
   return response.status(200).json({
     status: 'Success',
-    token,
+    accessToken,
+    refreshToken,
   });
 });
