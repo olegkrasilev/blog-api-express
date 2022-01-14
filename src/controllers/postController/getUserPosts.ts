@@ -6,41 +6,36 @@ import { tryCatch } from '@src/utils/tryCatch';
 import { Posts } from '@src/models/entities/Post';
 
 export const getUserPosts = tryCatch(async (request: RequestUser, response: Response, next: NextFunction) => {
-  const { id } = request.body;
-  const userId = id;
+  const { userID } = request.body;
 
-  if (!id) {
+  if (!userID) {
     return next(new AppError('This user does not exist', 400));
   }
 
   const postsOfUser = await Posts.find({
+    select: ['post', 'title', 'id', 'postCreationTime'],
     relations: ['user'],
     where: {
       user: {
-        id: userId,
+        id: userID,
       },
     },
   });
 
-  const data = postsOfUser.map(item => {
-    const { title, post, postCreationTime } = item;
-    const postId = item.id;
+  const data = postsOfUser.map(userPost => {
+    const { title, post, postCreationTime, id } = userPost;
 
     return {
       title,
       post,
       postCreationTime,
-      postId,
+      id,
     };
   });
 
-  if (postsOfUser.length === 0) {
-    return next(new AppError('No posts exist for current user', 400));
-  }
-
   return response.status(200).json({
     status: 'success',
-    userId,
+    userID,
     postsByUser: postsOfUser.length,
     data,
   });
