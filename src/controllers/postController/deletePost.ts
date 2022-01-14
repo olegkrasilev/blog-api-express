@@ -6,22 +6,22 @@ import { AppError } from '@src/utils/appError';
 import { Posts } from '@src/models/entities/Post';
 
 export const deletePost = tryCatch(async (request: RequestUser, response: Response, next: NextFunction) => {
-  const { id } = request.body;
+  const { postID } = request.body;
 
-  if (!id) {
+  if (!postID) {
     return next(new AppError('No posts were found', 400));
   }
 
-  const postId = id;
-  const existingPost = await Posts.findOne(postId);
+  const existingPost = await Posts.findOne(postID);
 
   if (!existingPost) {
     return next(new AppError('This post does not exist.', 404));
   }
 
-  await Posts.delete(postId);
+  await Posts.delete(postID);
 
   return response.json({
     status: 'success',
+    data: null,
   });
 });
