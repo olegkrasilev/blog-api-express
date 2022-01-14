@@ -1,12 +1,12 @@
 import bcrypt from 'bcrypt';
 import { NextFunction, Response } from 'express';
-import { validationResult } from 'express-validator';
 
 import { createRefreshAccessToken } from '@src/utils/createTokenJWT';
 import { AppError } from '@src/utils/appError';
 import { tryCatch } from '@src/utils/tryCatch';
 import { User } from '@src/models/entities/User';
 import { RequestUser } from '@src/types/index';
+import { validateRequest } from '@src/utils/express-validator';
 
 export const signup = tryCatch(async (request: RequestUser, response: Response, next: NextFunction) => {
   const { email, password, firstName, lastName } = request.body;
@@ -17,16 +17,7 @@ export const signup = tryCatch(async (request: RequestUser, response: Response, 
     return next(new AppError('All input is required: email, password, firstName, lastName', 400));
   }
 
-  // Validate request for errors with Express-validator
-
-  const errors = validationResult(request);
-
-  if (!errors.isEmpty()) {
-    return response.status(400).json({
-      status: 'fail',
-      errors: errors.array(),
-    });
-  }
+  validateRequest(request, response);
 
   //  Check if this user exits
   const isUserExists = await User.findOne({ email });
@@ -38,20 +29,19 @@ export const signup = tryCatch(async (request: RequestUser, response: Response, 
   //  Encrypt password and create user
 
   const encryptedPassword = await bcrypt.hash(password, 12);
-  const newUser = User.create({
+  const newUser = await User.create({
     email,
     firstName,
     lastName,
     encryptedPassword,
-  });
+  }).save();
 
-  await newUser.save();
-
-  const accessToken = createRefreshAccessToken(newUser.id, response);
+  const { refreshToken, accessToken } = createRefreshAccessToken(newUser.id, response);
 
   return response.status(201).json({
     status: 'Success',
     accessToken,
+    refreshToken,
     data: {
       id: newUser.id,
       email,
