@@ -1,0 +1,78 @@
+{
+  "env": {
+    "es2021": true,
+    "node": true,
+    "jest": true
+  },
+  "extends": [
+    "airbnb-base",
+    "airbnb-typescript/base",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:promise/recommended",
+    "prettier",
+    "plugin:sonarjs/recommended",
+    "plugin:jest/recommended",
+    "plugin:unicorn/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.eslint.json"
+  },
+  "plugins": ["@typescript-eslint", "promise", "import", "prettier", "sonarjs", "jest", "unicorn"],
+  "rules": {
+    "prettier/prettier": "error",
+    "import/prefer-default-export": "off",
+    "import/no-default-export": "error",
+    "no-use-before-define": [
+      "error",
+      {
+        "functions": false,
+        "classes": true,
+        "variables": true
+      }
+    ],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-use-before-define": [
+      "error",
+      {
+        "functions": false,
+        "classes": true,
+        "variables": true,
+        "typedefs": true
+      }
+    ],
+    "import/no-extraneous-dependencies": "off",
+    "unicorn/no-process-exit": "off",
+    "padding-line-between-statements": [
+      "error",
+      { "blankLine": "always", "prev": "*", "next": ["return", "function", "if", "export", "switch"] },
+      { "blankLine": "always", "prev": ["if", "switch"], "next": "*" },
+      { "blankLine": "always", "prev": ["const", "let"], "next": "expression" }
+    ],
+    "unicorn/filename-case": "off",
+    "consistent-return": "warn",
+    "prefer-destructuring": "off",
+    "unicorn/prefer-node-protocol": "off",
+    "import/order": [
+      "warn",
+      {
+        "alphabetize": {
+          "caseInsensitive": true,
+          "order": "asc"
+        },
+        "groups": ["builtin", "external", "index", "sibling", "parent", "internal"]
+      }
+    ],
+    "import/order": ["error", { "newlines-between": "always-and-inside-groups" }],
+    "import/no-cycle": "off",
+    "unicorn/no-null": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "./tsconfig.json"
+      }
+    }
+  }
+}
