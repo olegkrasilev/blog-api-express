@@ -20,6 +20,8 @@ export const deleteUser = tryCatch(async (request: RequestUser, response: Respon
 
   await entityManager.delete(User, id);
 
+  // TODO clear token
+
   return response.status(204).json({
     status: 'success',
     data: undefined,
