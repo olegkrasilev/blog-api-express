@@ -1,7 +1,7 @@
 # Project template :
 https://www.youtube.com/watch?v=BKz7rnbQyK4&list=PLzYM-WGWIJDR7K5GJPeYR74xKcxhE_lfw&index=2
 
-#Folders structure :
+# Folders structure :
 https://github.com/jonasschmedtmann/complete-node-bootcamp/tree/master/4-natours &nbsp;
 
 
@@ -11,100 +11,100 @@ Base url: '/api/v1/users'
 
 ## Get all users
 
-endpoint: '/getAllUsers'
-method: GET
-authentication: true
-request body: empty
+endpoint: '/getAllUsers' &nbsp;
+method: GET &nbsp;
+authentication: true &nbsp;
+request body: empty &nbsp;
 
 ## Reset Password
 
-endpoint: '/resetPassword/:token'
-method: PATCH
-authentication: false
-request body: {
+endpoint: '/resetPassword/:token' &nbsp;
+method: PATCH &nbsp;
+authentication: false &nbsp;
+request body: { &nbsp;
   password: '123456'
 }
 
 ## Get User
 
-endpoint: '/:id'
-method: GET
-authentication: true
-request body: {
+endpoint: '/:id' &nbsp;
+method: GET &nbsp;
+authentication: true &nbsp;
+request body: { &nbsp;
   userID: '1'
 }
 
 ## Sign up
 
-endpoint: '/signup'
-method: POST
-authentication: false
-request body: {
-  email: 'johndoe@gmail.com'
-  password: 'strongPassword'
-  firstName: 'John',
-  lastName: 'Doe'
+endpoint: '/signup' &nbsp;
+method: POST &nbsp;
+authentication: false &nbsp;
+request body: { &nbsp;
+  email: 'johndoe@gmail.com' &nbsp;
+  password: 'strongPassword' &nbsp;
+  firstName: 'John', &nbsp;
+  lastName: 'Doe' &nbsp;
 }
 
 ## Login
 
-endpoint: '/login'
-method: POST
-authentication: false
-request body: {
-  email: 'johndoe@gmail.com'
-  password: 'strongPassword'
+endpoint: '/login' &nbsp;
+method: POST &nbsp;
+authentication: false &nbsp;
+request body: { &nbsp;
+  email: 'johndoe@gmail.com' &nbsp;
+  password: 'strongPassword' &nbsp;
 }
 
 ## Forgot Password
 
-endpoint: '/forgotPassword'
-method: POST
-authentication: false
-request body: {
-  email: 'johndoe@gmail.com'
+endpoint: '/forgotPassword' &nbsp;
+method: POST &nbsp;
+authentication: false &nbsp;
+request body: { &nbsp;
+  email: 'johndoe@gmail.com' &nbsp;
 }
 
 ## Update password
 
-endpoint: '/updatePassword'
-method: PATCH
-authentication: true
-request body: {
-  userID : '1'
-  password : 'strongPassword'
-  newPassword : 'newStrongPassword'
+endpoint: '/updatePassword' &nbsp;
+method: PATCH &nbsp;
+authentication: true &nbsp;
+request body: { &nbsp;
+  userID : '1' &nbsp;
+  password : 'strongPassword' &nbsp;
+  newPassword : 'newStrongPassword' &nbsp;
 }
 
 ## Update user
 
-endpoint: '/updateUser'
-method: PATCH
-authentication: true
-request body: {
-  userID : '1'
-  email: 'johndoe@gmail.com'
-  firstName: 'John',
-  lastName: 'Doe'
+endpoint: '/updateUser' &nbsp;
+method: PATCH &nbsp;
+authentication: true &nbsp;
+request body: { &nbsp;
+  userID : '1' &nbsp;
+  email: 'johndoe@gmail.com' &nbsp;
+  firstName: 'John', &nbsp;
+  lastName: 'Doe' &nbsp;
 }
 
 ## Delete user
 
-endpoint: '/deleteUser'
-method: DELETE
-authentication: true
-request body: {
-  userID : 1
+endpoint: '/deleteUser' &nbsp;
+method: DELETE &nbsp;
+authentication: true &nbsp;
+request body: { &nbsp;
+  userID : 1 &nbsp;
 }
 
-userID should be a number!
+userID should be a number! &nbsp;
 
 ## Logout
 
-endpoint: '/logout'
-method: post
-authentication: true
-request body: empty
+endpoint: '/logout' &nbsp;
+method: post &nbsp;
+authentication: true &nbsp;
+request body: empty &nbsp;
 
 # Posts endpoint
 
@@ -112,49 +112,49 @@ Base url: '/api/v1/posts'
 
 ## Get all posts
 
-endpoint: '/getAllPosts'
-method: GET
-authentication: true
-request body: empty
+endpoint: '/getAllPosts' &nbsp;
+method: GET &nbsp;
+authentication: true &nbsp;
+request body: empty &nbsp;
 
 ## Create post
 
-endpoint: '/createPost'
-method: POST
-authentication: true
-request body: {
-  userID : '1'
-  post: 'New Post'
-  title: 'New Title'
+endpoint: '/createPost' &nbsp;
+method: POST &nbsp;
+authentication: true &nbsp;
+request body: { &nbsp;
+  userID : '1' &nbsp;
+  post: 'New Post' &nbsp;
+  title: 'New Title' &nbsp;
 }
 
 ## Update post
 
-endpoint: '/updatePost'
-method: PATCH
-authentication: true
-request body: {
-  postID : '1'
-  post: 'New Post'
-  title: 'New Title'
+endpoint: '/updatePost' &nbsp;
+method: PATCH &nbsp;
+authentication: true &nbsp;
+request body: { &nbsp;
+  postID : '1' &nbsp;
+  post: 'New Post' &nbsp;
+  title: 'New Title' &nbsp;
 }
 
 ## Delete post
 
-endpoint: '/deletePost'
-method: DELETE
-authentication: true
-request body: {
-  postID : '1'
+endpoint: '/deletePost' &nbsp;
+method: DELETE &nbsp;
+authentication: true &nbsp;
+request body: { &nbsp;
+  postID : '1' &nbsp;
 }
 
 ## Get user post
 
-endpoint: /getUserPosts'
-method: GET
-authentication: true
-request body: {
-  userID : '1'
+endpoint: /getUserPosts' &nbsp;
+method: GET &nbsp;
+authentication: true &nbsp;
+request body: { &nbsp;
+  userID : '1' &nbsp;
 }
 
 # Comments endpoint
@@ -163,34 +163,34 @@ Base url: '/api/v1/comments'
 
 ## Post comment
 
-endpoint: '/postComment'
-method: POST
-authentication: true
-request body: {
-  userID : '1'
-  postID : '1'
-  comment : 'cool post'
+endpoint: '/postComment' &nbsp;
+method: POST &nbsp;
+authentication: true &nbsp;
+request body: { &nbsp;
+  userID : '1' &nbsp;
+  postID : '1' &nbsp;
+  comment : 'cool post' &nbsp;
 }
 
 ## Update comment
 
-endpoint: '/updateComment'
-method: POST
-authentication: true
-request body: {
-  userID : '1'
-  postID : '1'
-  commentID : '1'
-  comment : 'new comment'
+endpoint: '/updateComment' &nbsp;
+method: POST &nbsp;
+authentication: true &nbsp;
+request body: { &nbsp;
+  userID : '1' &nbsp;
+  postID : '1' &nbsp;
+  commentID : '1' &nbsp;
+  comment : 'new comment' &nbsp;
 }
 
 ## Delete comment
 
-endpoint: /deleteComment'
-method: DELETE
-authentication: true
-request body: {
-  userID : '1'
-  postID : '1'
-  commentID : '1'
+endpoint: /deleteComment' &nbsp;
+method: DELETE &nbsp;
+authentication: true &nbsp;
+request body: { &nbsp;
+  userID : '1' &nbsp;
+  postID : '1' &nbsp;
+  commentID : '1' &nbsp;
 }
