@@ -1,5 +1,4 @@
 import { Response, NextFunction } from 'express';
-import { getManager } from 'typeorm';
 
 import { RequestUser } from '@src/types/index';
 import { tryCatch } from '@src/utils/tryCatch';
@@ -8,7 +7,6 @@ import { Posts } from '@src/models/entities/Post';
 import { validateRequest } from '@src/utils/express-validator';
 
 export const updatePost = tryCatch(async (request: RequestUser, response: Response, next: NextFunction) => {
-  const entityManager = getManager();
   const { postID, post, title } = request.body;
 
   if (!(postID && post && title)) {
@@ -23,7 +21,7 @@ export const updatePost = tryCatch(async (request: RequestUser, response: Respon
     return next(new AppError('This post does not exist.', 404));
   }
 
-  await entityManager.merge(Posts, existingPost, { post, title }).save();
+  await Posts.merge(existingPost, { post, title }).save();
 
   return response.json({
     status: 'success',
