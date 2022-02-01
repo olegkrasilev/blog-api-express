@@ -10,10 +10,10 @@ export const getAllPosts = tryCatch(async (request: Request, response: Response,
   });
 
   const AllUsersPosts = allPosts.map(data => {
-    const { title, post, postCreationTime, user } = data;
+    const { title, post, postCreationTime, user, id } = data;
     const { firstName, lastName } = user;
 
-    return { title, post, postCreationTime, firstName, lastName };
+    return { title, post, postCreationTime, firstName, lastName, postID: id };
   });
 
   return response.status(200).json({
