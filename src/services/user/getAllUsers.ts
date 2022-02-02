@@ -8,7 +8,7 @@ export const getAllUsers = tryCatch(async (request: Request, response: Response,
 
   return response.status(200).json({
     status: 'Success',
-    users: allUsers.length,
-    data: allUsers,
+    usersCount: allUsers.length,
+    users: allUsers,
   });
 });

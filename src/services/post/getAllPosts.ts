@@ -18,7 +18,7 @@ export const getAllPosts = tryCatch(async (request: Request, response: Response,
 
   return response.status(200).json({
     status: 'Success',
-    NumberOfPosts: allPosts.length,
+    numberOfPosts: allPosts.length,
     posts: AllUsersPosts,
   });
 });

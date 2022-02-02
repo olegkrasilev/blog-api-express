@@ -15,7 +15,7 @@ export const app = express();
 
 // middlewares
 const limiter = rateLimit({
-  max: 100,
+  max: 1000,
   windowMs: 60 * 60 * 1000,
   message: 'TOo many request from this IP. PLease try again in an hour!',
 });
