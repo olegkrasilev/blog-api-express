@@ -6,7 +6,9 @@ import { tryCatch } from '@src/utils/tryCatch';
 import { Posts } from '@src/models/entities/Post';
 
 export const getUserPosts = tryCatch(async (request: RequestUser, response: Response, next: NextFunction) => {
-  const { userID } = request.body;
+  const userID = request.params.id;
+
+  console.log(userID);
 
   if (!userID) {
     return next(new AppError('This user does not exist', 400));
@@ -22,7 +24,7 @@ export const getUserPosts = tryCatch(async (request: RequestUser, response: Resp
     },
   });
 
-  const data = postsOfUser.map(userPost => {
+  const posts = postsOfUser.map(userPost => {
     const { title, post, postCreationTime, id } = userPost;
 
     return {
@@ -37,6 +39,6 @@ export const getUserPosts = tryCatch(async (request: RequestUser, response: Resp
     status: 'success',
     userID,
     postsByUser: postsOfUser.length,
-    data,
+    posts,
   });
 });

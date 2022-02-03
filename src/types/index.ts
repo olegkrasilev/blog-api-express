@@ -16,6 +16,9 @@ export interface RequestUser extends Request {
     postID: number | undefined;
     commentID: number | undefined;
   };
+  params: {
+    id?: string;
+  };
 }
 
 export type Token = string | undefined;
