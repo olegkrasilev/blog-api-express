@@ -8,8 +8,6 @@ import { Posts } from '@src/models/entities/Post';
 export const getUserPosts = tryCatch(async (request: RequestUser, response: Response, next: NextFunction) => {
   const userID = request.params.id;
 
-  console.log(userID);
-
   if (!userID) {
     return next(new AppError('This user does not exist', 400));
   }
