@@ -14,6 +14,6 @@ export const router = express.Router();
 router.route('/createPost').post(isAuth, validatePostAndTitle, createPost);
 router.route('/updatePost').patch(isAuth, validatePostAndTitle, updatePost);
 router.route('/deletePost').delete(isAuth, deletePost);
-router.route('/getAllPosts').get(isAuth, getAllPosts);
+router.route('/getAllPosts/:page').get(isAuth, getAllPosts);
 router.route('/getUserPosts/:id').get(isAuth, getUserPosts);
 router.route('/getUserPost/:id').get(isAuth, getUserPost);
