@@ -18,6 +18,7 @@ export interface RequestUser extends Request {
   };
   params: {
     id?: string;
+    page?: string;
   };
 }
 
