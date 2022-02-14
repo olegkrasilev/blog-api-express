@@ -4,11 +4,19 @@ import { tryCatch } from '@src/utils/tryCatch';
 import { User } from '@src/models/entities/User';
 
 export const getAllUsers = tryCatch(async (request: Request, response: Response, next: NextFunction) => {
-  const allUsers = await User.find({ select: ['id', 'email', 'firstName', 'lastName'] });
+  const POST_TO_TAKE = 5;
+  const FRONTEND_PAGINATION_BUTTON = Number(request.params.page);
+  const POST_TO_SKIP = (FRONTEND_PAGINATION_BUTTON - 1) * POST_TO_TAKE;
+
+  const [users, total] = await User.findAndCount({
+    select: ['id', 'email', 'firstName', 'lastName'],
+    take: POST_TO_TAKE,
+    skip: POST_TO_SKIP,
+  });
 
   return response.status(200).json({
     status: 'Success',
-    usersCount: allUsers.length,
-    users: allUsers,
+    total,
+    users,
   });
 });
