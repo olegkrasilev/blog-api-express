@@ -5,8 +5,8 @@ import { User } from '@src/models/entities/User';
 
 export const getAllUsers = tryCatch(async (request: Request, response: Response, next: NextFunction) => {
   const POST_TO_TAKE = 5;
-  const FRONTEND_PAGINATION_BUTTON = Number(request.params.page);
-  const POST_TO_SKIP = (FRONTEND_PAGINATION_BUTTON - 1) * POST_TO_TAKE;
+  const REQUESTED_PAGE = Number(request.params.page);
+  const POST_TO_SKIP = (REQUESTED_PAGE - 1) * POST_TO_TAKE;
 
   const [users, total] = await User.findAndCount({
     select: ['id', 'email', 'firstName', 'lastName'],

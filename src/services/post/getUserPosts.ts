@@ -9,8 +9,8 @@ export const getUserPosts = tryCatch(async (request: RequestUser, response: Resp
   const userID = request.params.id;
 
   const POST_TO_TAKE = 5;
-  const FRONTEND_PAGINATION_BUTTON = Number(request.params.page);
-  const POST_TO_SKIP = (FRONTEND_PAGINATION_BUTTON - 1) * POST_TO_TAKE;
+  const REQUESTED_PAGE = Number(request.params.page);
+  const POST_TO_SKIP = (REQUESTED_PAGE - 1) * POST_TO_TAKE;
 
   if (!userID) {
     return next(new AppError('This user does not exist', 400));
