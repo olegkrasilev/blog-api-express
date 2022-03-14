@@ -1,7 +1,12 @@
-# Project template :
+## General info
 
-https://www.youtube.com/watch?v=BKz7rnbQyK4&list=PLzYM-WGWIJDR7K5GJPeYR74xKcxhE_lfw&index=2
+Trainee-project with server architecture. Server-side is intended to authorize and store some user data.
 
-# Folders structure :
+## Technologies
 
-https://github.com/jonasschmedtmann/complete-node-bootcamp/tree/master/4-natours <br />
+Server-side of application is presented in two variants of implementation created with:
+
+- Express: 4.17.2,
+- Typeorm: 0.2.41,
+- Pg: 8.7.1
+
