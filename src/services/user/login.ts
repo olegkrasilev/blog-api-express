@@ -24,6 +24,8 @@ export const login = tryCatch(async (request: RequestUser, response: Response, n
     return next(new AppError('This user does not exist', 404));
   }
 
+  const { lastName, firstName } = isUserExists;
+
   const { encryptedPassword, id } = isUserExists;
 
   // 3) Check if user exist && password is correct
@@ -38,6 +40,10 @@ export const login = tryCatch(async (request: RequestUser, response: Response, n
 
   return response.status(200).json({
     status: 'Success',
+    id,
+    firstName,
+    lastName,
+    email,
     accessToken,
     refreshToken,
   });

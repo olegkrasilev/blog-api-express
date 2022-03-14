@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 import { errorHandler } from '@src/services/error/errorController';
 import { AppError } from '@src/utils/appError';
@@ -15,11 +16,17 @@ export const app = express();
 
 // middlewares
 const limiter = rateLimit({
-  max: 100,
+  max: 1000,
   windowMs: 60 * 60 * 1000,
   message: 'TOo many request from this IP. PLease try again in an hour!',
 });
 
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 app.use('/api', limiter);
 app.use(express.json({ limit: '10kb' }));
 app.use(helmet());

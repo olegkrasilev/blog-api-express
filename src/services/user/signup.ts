@@ -40,14 +40,12 @@ export const signup = tryCatch(async (request: RequestUser, response: Response, 
 
   return response.status(201).json({
     status: 'Success',
+    id: newUser.id,
+    email,
+    password,
+    firstName,
+    lastName,
     accessToken,
     refreshToken,
-    data: {
-      id: newUser.id,
-      email,
-      password,
-      firstName,
-      lastName,
-    },
   });
 });

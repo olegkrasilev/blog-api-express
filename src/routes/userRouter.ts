@@ -22,7 +22,7 @@ import { deleteUser } from '@src/services/user/deleteUser';
 
 export const router = express.Router();
 
-router.route('/getAllUsers').get(isAuth, getAllUsers);
+router.route('/getAllUsers/:page').get(isAuth, getAllUsers);
 router.route('/resetPassword/:token').patch(validatePassword, resetPassword);
 router.route('/:id').get(isAuth, getUser);
 router.route('/signup').post(validationChain, signup);

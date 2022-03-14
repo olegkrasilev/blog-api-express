@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { Response } from 'express';
+import { addMinutes, addDays } from 'date-fns';
 
 import { config } from '@src/config/config';
 
@@ -13,13 +14,13 @@ const {
 } = config.jwt;
 
 const cookieAccessOptions = {
-  expires: new Date(Date.now() + Number(jwtCookieAccessExpiresIn) * 24 * 60 * 60 * 1000),
+  expires: addMinutes(new Date(), Number(jwtCookieAccessExpiresIn)),
   httpOnly: true,
   secure: false,
 };
 
 const cookieRefreshOptions = {
-  expires: new Date(Date.now() + Number(jwtCookieRefreshExpiresIn) * 24 * 60 * 60 * 1000),
+  expires: addDays(new Date(), Number(jwtCookieRefreshExpiresIn)),
   httpOnly: true,
   secure: false,
 };

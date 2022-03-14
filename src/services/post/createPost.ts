@@ -1,5 +1,4 @@
 import { Response, NextFunction } from 'express';
-import { getManager } from 'typeorm';
 
 import { validateRequest } from '@src/utils/express-validator';
 import { RequestUser } from '@src/types/index';
@@ -9,7 +8,6 @@ import { User } from '@src/models/entities/User';
 import { Posts } from '@src/models/entities/Post';
 
 export const createPost = tryCatch(async (request: RequestUser, response: Response, next: NextFunction) => {
-  const entityManager = getManager();
   const { userID, post, title } = request.body;
 
   if (!(userID && post && title)) {
@@ -24,7 +22,11 @@ export const createPost = tryCatch(async (request: RequestUser, response: Respon
     return next(new AppError('This user does not exist.', 404));
   }
 
-  await entityManager.save(Posts, { user, title, post });
+  await Posts.create({
+    user,
+    post,
+    title,
+  }).save();
 
   return response.status(200).json({
     status: 'success',

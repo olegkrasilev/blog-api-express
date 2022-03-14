@@ -28,10 +28,8 @@ export const updateUser = tryCatch(async (request: RequestUser, response: Respon
 
   return response.status(200).json({
     status: 'success',
-    data: {
-      newEmail,
-      lastName,
-      firstName,
-    },
+    newEmail,
+    lastName,
+    firstName,
   });
 });
